@@ -1,6 +1,7 @@
 import Navbar from '../components/navbar'
 import Head from 'next/head'
 import Image from 'next/image'
+import AddProject from '../components/add-project'
 
 export default function HomePage() {
         return <>
@@ -12,6 +13,7 @@ export default function HomePage() {
                 </Head>
                         <main className='' >
                                 <Navbar />
+                                <AddProject />
                         </main>
                 </>
 }
