@@ -2,7 +2,6 @@ import Image from 'next/image'
 import React from 'react'
 import NavbarItem from './navbarItem'
 import logo from '../public/SVG/Asset_26.svg'
-import Button from './button'
 import { FiMenu } from 'react-icons/fi';
 import LeftRightAligner from './left-right-aligner'
 
