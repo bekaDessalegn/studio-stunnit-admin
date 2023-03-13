@@ -1,16 +1,16 @@
 import React from 'react'
 import Navbar from '../components/navbar'
-import AddTestimonial from '../components/add-testimonials'
+import AddFAQ from '../components/add-faq'
 
-const testimonials = () => {
+const faq = () => {
   return (
     <>
       <main className='' >
         <Navbar />
-        <AddTestimonial />
+        <AddFAQ />
     </main>
     </>
   )
 }
 
-export default testimonials
+export default faq

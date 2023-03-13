@@ -4,6 +4,7 @@ import DescriptionTF from './descriptionTF'
 import UploadButton from './upload_button'
 import Button2 from './button2'
 import Image from 'next/image'
+import Rating from './rate'
 import img from '../public/images/Asset_12.png'
 
 const AddTestimonial = () => {
@@ -13,18 +14,21 @@ const AddTestimonial = () => {
         <p className='text-xl font-bold'>Add Testimonial</p>
         <Textform label="Full Name" />
         <Textform label="Occupation" />
-        <Textform label="Rating" />
+        <p className='font-bold mb-1'>Rating</p>
+        <Rating />
         <DescriptionTF label="Description" />
         <div>
-        <Image className='max-w-[250px] rounded-lg mt-5' src={mainImage} />
+        <Image className="w-[230px] md:w-[150px] rounded-full" src={img} />
         </div>
-        <p className='font-bold my-2'>Main image</p>
-        <UploadButton />
-        <ImagesGrid />
-        <p className='font-bold my-2'>More images</p>
+        <p className='font-bold my-2'>Image</p>
         <UploadButton />
         <div className=' my-10'>
-        <Button2 name="Add project" />
+        <Button2 name="Add testimonial" />
+        </div>
+        <p className='text-xl font-bold'>Add Testimonial Youtube Link</p>
+        <Textform label="Testimonial Youtube Link" />
+        <div className=' my-10'>
+        <Button2 name="Add testimonial youtube link" />
         </div>
         </div>
     </div>
