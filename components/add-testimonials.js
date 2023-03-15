@@ -6,6 +6,7 @@ import Button2 from './button2'
 import Image from 'next/image'
 import Rating from './rate'
 import img from '../public/images/Asset_12.png'
+import UploadTestimonialImage from './upload-testimonial-image'
 
 const AddTestimonial = () => {
   return (
@@ -17,11 +18,7 @@ const AddTestimonial = () => {
         <p className='font-bold mb-1'>Rating</p>
         <Rating />
         <DescriptionTF label="Description" />
-        <div>
-        <Image className="w-[230px] md:w-[150px] rounded-full" src={img} />
-        </div>
-        <p className='font-bold my-2'>Image</p>
-        <UploadButton />
+        <UploadTestimonialImage />
         <div className=' my-10'>
         <Button2 name="Add testimonial" />
         </div>

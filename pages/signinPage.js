@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Textformfield from '../components/textformfield'
 import PasswordTF from '../components/passwordTF'
 import Button from '../components/button'
+import Link from 'next/link'
 
 const signinPage = () => {
   return (
@@ -22,7 +23,7 @@ const signinPage = () => {
                 <Textformfield label='Username' />
                 <PasswordTF label='Password' />
                 <div className='mt-10'>
-                <Button name='Sign in' />
+                <Link href="/"><Button name='Sign in' /></Link>
                 </div>
                 </div>
             </div>
