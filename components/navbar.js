@@ -5,12 +5,28 @@ import logo from '../public/SVG/Asset_26.svg'
 import { FiMenu } from 'react-icons/fi';
 import LeftRightAligner from './left-right-aligner'
 import Link from 'next/link'
+import Button from './button'
+import { useState } from 'react';
+import Modal from './modal';
 
 
 export default function Navbar() {
+    const [isOpen, setIsOpen] = useState(false);
+  
+    function handleOpenModal() {
+      setIsOpen(true);
+    }
+  
+    function handleCloseModal() {
+      setIsOpen(false);
+    }
     return (
+        <div>
+            <Modal isOpen={isOpen} onClose={handleCloseModal} title="Log out">
+        <p>Are you sure you want to logout ?</p>
+      </Modal>
         <LeftRightAligner>
-            <div className=' py-3 grid grid-flow-col '>
+            <div className=' py-3 grid grid-flow-col border-b-textFormBorderbg border-b-2'>
                 {/* logo start */}
                 <div className='mr-auto my-auto grid'>
                     <Link href="/"><Image className='max-w-[70px]' src={logo} /></Link>
@@ -20,8 +36,10 @@ export default function Navbar() {
                     <div className='my-auto grid-flow-col gap-8 hidden md:grid'>
                         <NavbarItem name='Projects' path="/" />
                         <NavbarItem name='Testimonials' path="/testimonials" />
+                        <NavbarItem name='Testimonial Link' path="/testimonial_link" />
                         <NavbarItem name='FAQ' path="/faq" />
                     </div>
+                    <Button onClick={handleOpenModal} name='log out' />
                     <div className='my-auto grid md:hidden'>
                         <FiMenu className='w-[40px] h-[40px]' />
                     </div>
@@ -29,5 +47,6 @@ export default function Navbar() {
                 </div>
             </div>
         </LeftRightAligner>
+        </div>
     )
 }

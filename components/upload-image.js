@@ -19,7 +19,7 @@ export default function UploadImage() {
         <p className='font-bold my-2'>Main image</p>
       {image ? (
         <div>
-        <Image className='max-w-[250px] rounded-lg my-5' width={250} height={250} src={URL.createObjectURL(image)} />
+        <Image className='max-h-[150px] h-[150px] rounded-lg my-5' width={250} height={150} src={URL.createObjectURL(image)} />
         </div>
       ) : (
         <div className="">

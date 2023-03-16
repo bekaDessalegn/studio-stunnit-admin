@@ -8,7 +8,7 @@ const Dropdown = () => {
   const [selectedItem, setSelectedItem] = useState("Dropdown")
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className='relative flex flex-col w-[340px] rounded-lg'>
+    <div className='w-full relative flex flex-col md:w-[340px] rounded-lg'>
       <button onClick={() => setIsOpen((prev) => !prev)} className='bg-textFormbg border-textFormBorderbg rounded-lg p-2 w-full flex items-center justify-between border-2 active:border-accentColor duration-300 active:text-accentColor'>
         {selectedItem ? (<p>{selectedItem}</p>) : (<p>Dropdown</p>)}
         {!isOpen ? (

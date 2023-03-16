@@ -19,7 +19,7 @@ export default function UploadTestimonialImage() {
         <p className='font-bold my-2'>Image</p>
       {image ? (
         <div>
-        <Image className="w-[230px] md:w-[150px] rounded-full my-5" width={230} height={230} src={URL.createObjectURL(image)} />
+        <Image className="w-[150px] max-h-[150px] rounded-full my-5" width={230} height={230} src={URL.createObjectURL(image)} />
         </div>
       ) : (
         <div className="">

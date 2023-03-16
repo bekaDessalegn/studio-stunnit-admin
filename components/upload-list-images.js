@@ -28,7 +28,7 @@ export default function UploadListImages() {
         <div className="grid grid-cols-3 gap-[20px] my-5">
         {images.map((image) => (
           <div>
-            <Image className='w-[250px] h-[150px] rounded-lg' width={250} height={150} src={URL.createObjectURL(image)}/>
+            <Image className='max-h-[150px] h-[150px] rounded-lg' width={250} height={150} src={URL.createObjectURL(image)}/>
           </div>
         ))}
       </div>

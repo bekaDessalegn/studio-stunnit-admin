@@ -8,13 +8,13 @@ import Link from 'next/link'
 
 const signinPage = () => {
   return (
-    <div className='flex h-screen w-screen'>
-        <div className='w-1/2 h-full flex justify-center items-center'>
+    <div className='flex h-screen w-screen justify-center'>
+        <div className='w-1/2 h-full hidden md:flex justify-center items-center'>
             <div className=''>
                 <Image className='max-w-[350px]' src={logo} />
             </div>
         </div>
-        <div className='w-1/2 h-full flex justify-center items-center mr-40'>
+        <div className='md:w-1/2 h-full flex justify-center items-center lg:mr-40'>
             <div className='flex-col text-center'>
                 <p className='text-4xl'>HELLO</p>
                 <p className='font-bold text-4xl'>ADMIN</p>
