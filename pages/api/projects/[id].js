@@ -77,6 +77,34 @@ export default function handler(req, res) {
           }
         }
       });
+} else if (req.method === 'DELETE') {
+  
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        const jsonData = JSON.parse(data);
+        const index = jsonData.findIndex((item) => item.id === id);
+
+        if (index === -1) {
+          console.error(`Item with ID ${itemId} not found!`);
+          res.status(404).json({ error: '404 Not Found' });
+        } else {
+
+            jsonData.splice(index, 1);
+
+          fs.writeFile(filePath, JSON.stringify(jsonData), (err) => {
+            if (err) {
+              console.error(err);
+            } else {
+              console.log('Item deleted successfully!');
+              res.setHeader('Content-Type', 'text/plain');
+              res.status(200).send("Item deleted successfully!");
+            }
+          });
+        }
+      }
+    });
 } else {
     res.status(405).json({ error: 'Method Not Allowed' });
   }

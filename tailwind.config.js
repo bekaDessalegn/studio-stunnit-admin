@@ -25,6 +25,7 @@ module.exports = {
         onPrimary:"#ffffff",
         onBackground:"#000000",
         onSurface:"#000000",
+        "dangerColor":"#CC3333",
       }
 
     },
