@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 import { useState } from 'react'
 import {AiOutlineDown, AiOutlineUp, AiOutlineEdit, AiOutlineDelete} from 'react-icons/ai'
@@ -29,7 +30,7 @@ const FaqItem = ({items}) => {
             <div className='font-semibold'>{item.question}</div>
             <div className='flex flex-row'>
                 <div className='flex flex-row mr-4'>
-                    <AiOutlineEdit className='w-[25px] h-[25px] mr-2 cursor-pointer' />
+                    <Link href={`/faq/${item.id}/edit`}><AiOutlineEdit className='w-[25px] h-[25px] mr-2 cursor-pointer' /></Link>
                     <AiOutlineDelete onClick={handleOpenModal} className='w-[25px] h-[25px] fill-dangerColor cursor-pointer' />
                 </div>
                 <div>{index === activeIndex ? <AiOutlineUp className='w-[25px] h-[25px] text-accentColor' /> : <AiOutlineDown className='w-[25px] h-[25px] text-accentColor' />}</div>

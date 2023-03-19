@@ -12,7 +12,9 @@ const AddTestimonialLink = () => {
             <Heading heading='Youtube Links' />
       </div>
         <YoutubeLinks />
-        <p className='text-xl font-bold mt-5 mb-2'>Add Testimonial Youtube Link</p>
+        <div className='grid text-center gap-2 mt-5 mb-5'>
+                    <Heading heading='Add Testimonial Youtube Link' />
+                </div>
         <Textform label="Testimonial Youtube Link" />
         <div className=' my-10'>
         <Button2 name="Add testimonial youtube link" />

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/solid';
 
-const Rating = () => {
-  const [rating, setRating] = useState(0);
+const Rating = ({rate}) => {
+  rate = rate ? rate : 0;
+  const [rating, setRating] = useState(rate);
 
   const handleRating = (value) => {
     setRating(value);
