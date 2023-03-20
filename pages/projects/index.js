@@ -1,9 +1,9 @@
-import Navbar from '../components/navbar'
+import Navbar from '../../components/navbar'
 import Head from 'next/head'
 import Image from 'next/image'
-import AddProject from '../components/add-project'
+import AddProject from '../../components/add-project'
 
-export default function HomePage() {
+export default function Projects() {
         return <>
                 <Head>
                         <title>Studio Stunnit Admin</title>
