@@ -13,9 +13,8 @@ try {
 }
 
 export default nextConnect<NextApiRequest, NextApiResponse>({
-    attachParams: true,
     onError: (err, req, res, next) => {
-        console.error("testimonial-youtube-links onError:", err.stack);
+        console.error("onError(testimonial-youtube-links):", err.stack);
         res.status(500).end(responses.internalError);
     },
     onNoMatch: (req, res) => {
@@ -33,6 +32,25 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
     }
 }).get((req, res) => {
     res.end(JSON.stringify(links))
+}).patch((req, res) => {
+    const { id } = req.query
+    const { youtubeLink } = req.body
+    if (!id) {
+        res.status(400).end(functions.createSingleResponse("Id_Is_Required"))
+    } else {
+        let updatedLink: TestimonialYoutubeLink | undefined = undefined
+        links = links.map(link => {
+            if (link.id !== id) return link
+            updatedLink = { id, youtubeLink: youtubeLink ?? link.youtubeLink }
+            return updatedLink
+        })
+        if (updatedLink) {
+            saveData()
+            res.end(JSON.stringify(updatedLink))
+        } else {
+            res.status(404).end(responses.notFound)
+        }
+    }
 }).delete((req, res) => {
     const { id } = req.query
     if (!id) {
@@ -41,18 +59,6 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
         links = links.filter(link => link.id !== id)
         saveData()
         res.end(responses.ok)
-    }
-}).patch((req, res) => {
-    const { id } = req.query
-    const { youtubeLink } = req.body
-    if (!id) {
-        res.status(400).end(functions.createSingleResponse("Id_Is_Required"))
-    } else if (!youtubeLink) {
-        res.status(400).end(functions.createSingleResponse("Youtube_Link_Is_Required"))
-    } else {
-        links = links.map(link => link.id !== id ? link : { id, youtubeLink })
-        saveData()
-        res.end(JSON.stringify({ id, youtubeLink }))
     }
 })
 

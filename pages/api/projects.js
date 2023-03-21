@@ -25,7 +25,7 @@ const upload = multer({
 const uploadMiddleware = upload.fields([
   { name: 'mainImage' },
   { name: 'moreImages' }
-]);;
+]);
 
 // Adds the middleware to Next-Connect
 apiRoute.use(uploadMiddleware);

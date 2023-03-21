@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+const fs = require('fs')
 
 export default {
     createId() {
@@ -6,5 +7,12 @@ export default {
     },
     createSingleResponse(message: string) {
         return JSON.stringify({ message })
+    },
+    deleteFile(path: string) {
+        try {
+            fs.unlinkSync(path)
+        } catch (e) {
+            console.error(`deleteFile(${path})`, e)
+        }
     }
 }
