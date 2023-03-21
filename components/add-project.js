@@ -11,7 +11,7 @@ export default function AddProject({}) {
   return (
     <div className='w-screen flex justify-center'>
         <div className='w-3/5 items-center border-x-2 border-textFormBorderbg px-10'>
-        <div className='grid text-center gap-2 mb-5'>
+        <div className='grid text-center gap-2 mb-5 mt-10'>
                     <Heading heading='Add Project' />
                 </div>
         <Textform label="Title" />

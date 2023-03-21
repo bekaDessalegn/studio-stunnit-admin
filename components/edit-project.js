@@ -7,16 +7,16 @@ import UploadImage from './upload-image'
 import UploadListImages from './upload-list-images'
 import Heading from './heading'
 
-export default function EditProject({}) {
+export default function EditProject({project}) {
   return (
     <div className='w-screen flex justify-center'>
         <div className='w-3/5 items-center border-x-2 border-textFormBorderbg px-10'>
         <div className='grid text-center gap-2 mb-5 mt-16'>
                     <Heading heading='Edit Project' />
                 </div>
-        <Textform label="Title" />
-        <DescriptionTF label="Description" />
-        <ClientTF label="Client's word" />
+        <Textform value={project.title} label="Title" />
+        <DescriptionTF value={project.description} label="Description" />
+        <ClientTF value={project.testimony} label="Client's word" />
         <UploadImage />
         <UploadListImages />
         <div className=' my-10'>
