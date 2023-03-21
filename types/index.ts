@@ -1,0 +1,1 @@
+export type { TestimonialYoutubeLink } from "./testimonial-youtube-link"

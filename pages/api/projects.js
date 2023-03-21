@@ -3,6 +3,14 @@ import { v4 } from "uuid";
 import nextConnect from 'next-connect';
 import multer from 'multer';
 
+
+const apiRoute = nextConnect({
+  // Handle any other HTTP method
+  onNoMatch(req, res) {
+    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
+  },
+});
+
 // Returns a Multer instance that provides several methods for generating 
 // middleware that process files uploaded in multipart/form-data format.
 const upload = multer({
@@ -12,13 +20,6 @@ const upload = multer({
   }),
 })
 
-
-const apiRoute = nextConnect({
-  // Handle any other HTTP method
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
-  },
-});
 
 // Returns middleware that processes multiple files sharing the same field name.
 const uploadMiddleware = upload.fields([
