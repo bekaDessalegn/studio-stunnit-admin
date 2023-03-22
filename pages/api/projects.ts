@@ -3,156 +3,190 @@ import { v4 } from "uuid";
 import fs from 'fs';
 import nextConnect from 'next-connect';
 import { functions, responses } from "../../commons";
-import { Testimonial } from "../../types";
+import { Project } from "../../types";
 import multer from 'multer';
 
-// const dataFilePath = "./db/projects/data.json"
-// const imagesDirPath = "./db/projects/images"
-// const imagesUrlRootPath = "/projects/images/"
-// const imagesRootPath = "./db"
-// const maxRating = 5
-// const upload = multer({
-//     storage: multer.diskStorage({
-//         destination: imagesDirPath,
-//         filename: (req, file, cb) => cb(null, v4() + file.originalname.substring(file.originalname.lastIndexOf("."))),
-//     }),
-// })
-// const uploadMiddleware = upload.single("avatar")
+const dataFilePath = "./db/projects/data.json"
+const imagesDirPath = "./public/projects/images"
+const imagesUrlRootPath = "/projects/images/"
+const imagesRootPath = "./public"
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: imagesDirPath,
+        filename: (req, file, cb) => cb(null, `${v4()}-${Date.now()}${file.originalname.substring(file.originalname.lastIndexOf("."))}`),
+    }),
+})
+const uploadMiddleware = upload.fields([
+    { name: 'mainImage', maxCount: 1 },
+    { name: 'moreImages' }
+]);
 
-// let testimonials: Testimonial[]
-// try {
-//     testimonials = JSON.parse(fs.readFileSync(dataFilePath, { encoding: "utf-8" }))
-// } catch (e) {
-//     testimonials = []
-// }
+let projects: Project[]
+try {
+    projects = JSON.parse(fs.readFileSync(dataFilePath, { encoding: "utf-8" }))
+} catch (e) {
+    projects = []
+}
+console.dir(projects,{depth:null})
+export default nextConnect<NextApiRequest, NextApiResponse>({
+    onError: (err, req, res, next) => {
+        // @ts-ignore
+        let { mainImage, moreImages } = req.files
+        let uploadedImages
+        if (err.code === "LIMIT_UNEXPECTED_FILE") {
+            res.status(400).end(functions.createSingleResponse("Multiple_Main_Images_Found"));
+            uploadedImages = [...(moreImages ?? [])]
+        } else {
+            console.error("onError(/projects):", err.stack);
+            res.status(500).end(responses.internalError);
+            uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+        }
+        deleteMulterFiles(uploadedImages)
+    },
+    onNoMatch: (req, res) => {
+        res.status(404).end(responses.notFound);
+        // @ts-ignore
+        let { mainImage, moreImages } = req.files
+        const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+        deleteMulterFiles(uploadedImages)
+    }
+})
+    .use(uploadMiddleware)
+    .post((req, res) => {
+        // @ts-ignore
+        if (!req.body) {
+            res.status(400).end(functions.createSingleResponse("Body_Is_Required"))
+            return
+        }
+        // @ts-ignore
+        let { mainImage, moreImages } = req.files
+        mainImage = mainImage ?? []
+        moreImages = moreImages ?? []
+        const uploadedImages = [...mainImage, ...moreImages]
+        const { title, description, clientsWord } = req.body
 
-// export default nextConnect<NextApiRequest, NextApiResponse>({
-//     onError: (err, req, res, next) => {
-//         console.error("onError(testimonials):", err.stack);
-//         res.status(500).end(responses.internalError);
-//     },
-//     onNoMatch: (req, res) => {
-//         res.status(404).end(responses.notFound);
-//     }
-// })
-//     .use(uploadMiddleware)
-//     .post((req, res) => {
-//         // @ts-ignore
-//         const avatarFileName = req.file?.filename
-//         // @ts-ignore
-//         const avatarFilepath = req.file?.path
-//         if (!req.body) {
-//             res.status(400).end(functions.createSingleResponse("Body_Is_Required"))
-//             if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
-//             return
-//         }
-//         const { name, occupation, description } = req.body
-//         const rating = parseInt(req.body.rating)
-//         if (!avatarFileName) {
-//             res.status(400).end(functions.createSingleResponse("Avatar_Image_Is_Required"))
-//         } else if (!name) {
-//             res.status(400).end(functions.createSingleResponse("Name_Is_Required"))
-//             functions.deleteFile(avatarFilepath)
-//         } else if (!occupation) {
-//             res.status(400).end(functions.createSingleResponse("Occupation_Is_Required"))
-//             functions.deleteFile(avatarFilepath)
-//         } else if (rating !== 0 && !rating) {
-//             res.status(400).end(functions.createSingleResponse("Rating_Is_Required"))
-//             functions.deleteFile(avatarFilepath)
-//         } else if (rating < 0 || rating > maxRating) {
-//             res.status(400).end(functions.createSingleResponse(`Rating_Must_Between_0_And_${maxRating}`))
-//             functions.deleteFile(avatarFilepath)
-//         } else if (!description) {
-//             res.status(400).end(functions.createSingleResponse("Description_Is_Required"))
-//             functions.deleteFile(avatarFilepath)
-//         } else {
-//             const newTestimonial: Testimonial = {
-//                 id: functions.createId(),
-//                 avatarUrl: imagesUrlRootPath + avatarFileName,
-//                 name, occupation, rating, description
-//             }
-//             testimonials.push(newTestimonial)
-//             saveData()
-//             res.end(JSON.stringify(newTestimonial))
-//         }
-//     })
-//     .get((req, res) => {
-//         res.end(JSON.stringify(testimonials))
-//     })
-//     .patch((req, res) => {
-//         const { id } = req.query
-//         // @ts-ignore
-//         const avatarFileName = req.file?.filename
-//         // @ts-ignore
-//         const avatarFilepath = req.file?.path
-//         if (!req.body) {
-//             res.status(400).end(functions.createSingleResponse("Body_Is_Required"))
-//             if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
-//             return
-//         }
-//         const { name, occupation, description } = req.body
-//         const rating = parseInt(req.body.rating)
+        if (!mainImage[0]?.filename) {
+            res.status(400).end(functions.createSingleResponse("Main_Image_Is_Required"))
+            deleteMulterFiles(uploadedImages)
+        } else if (!title) {
+            res.status(400).end(functions.createSingleResponse("Title_Is_Required"))
+            deleteMulterFiles(uploadedImages)
+        } else if (!description) {
+            res.status(400).end(functions.createSingleResponse("Description_Is_Required"))
+            deleteMulterFiles(uploadedImages)
+        } else {
+            const newProject: Project = {
+                id: functions.createId(),
+                title, description,
+                mainImage: imagesUrlRootPath + mainImage[0].filename,
+                moreImages: moreImages.map((image: { filename: string }) => imagesUrlRootPath + image.filename),
+                clientsWord: clientsWord ?? "",
+                viewCount: 0
+            }
+            projects.push(newProject)
+            saveData()
+            res.end(JSON.stringify(newProject))
+        }
+    })
+    .get((req, res) => {
+        // @ts-ignore
+        let { mainImage, moreImages } = req.files
+        const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+        deleteMulterFiles(uploadedImages)
 
-//         if (!id) {
-//             res.status(400).end(functions.createSingleResponse("Id_Is_Required"))
-//             if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
-//         } else if (rating && (rating < 0 || rating > maxRating)) {
-//             res.status(400).end(functions.createSingleResponse(`Rating_Must_Between_0_And_${maxRating}`))
-//             if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
-//         } else {
-//             let oldTestimonialAvatarUrl: string = ""
-//             let updatedTestimonial: Testimonial | undefined = undefined
-//             testimonials = testimonials.map(testimonial => {
-//                 if (testimonial.id !== id) { return testimonial }
-//                 updatedTestimonial = {
-//                     id,
-//                     avatarUrl: avatarFileName ? imagesUrlRootPath + avatarFileName : testimonial.avatarUrl,
-//                     name: name ?? testimonial.name,
-//                     occupation: occupation ?? testimonial.occupation,
-//                     rating: rating ? rating : testimonial.rating,
-//                     description: description ?? testimonial.description
-//                 }
-//                 if (avatarFileName) {
-//                     oldTestimonialAvatarUrl = testimonial.avatarUrl
-//                 }
-//                 return updatedTestimonial
-//             })
-//             if (updatedTestimonial) {
-//                 saveData()
-//                 res.end(JSON.stringify(updatedTestimonial))
-//                 if (oldTestimonialAvatarUrl) {
-//                     functions.deleteFile(imagesRootPath + oldTestimonialAvatarUrl)
-//                 }
-//             } else {
-//                 res.status(404).end(responses.notFound)
-//             }
-//         }
-//     })
-//     .delete((req, res) => {
-//         const { id } = req.query
-//         if (!id) {
-//             res.status(400).end(functions.createSingleResponse("Id_Is_Required"))
-//         } else {
-//             let deletedTestimonialAvatarUrl: string = ""
-//             testimonials = testimonials.filter(testimonial => {
-//                 if (testimonial.id !== id) return true
-//                 deletedTestimonialAvatarUrl = testimonial.avatarUrl
-//                 return false
-//             })
-//             saveData()
-//             res.end(responses.ok)
-//             if (deletedTestimonialAvatarUrl) {
-//                 functions.deleteFile(imagesRootPath + deletedTestimonialAvatarUrl)
-//             }
-//         }
-//     })
+        const { id } = req.query
+        if (id) {
+            for (let project of projects) {
+                if (project.id === id) {
+                    res.end(JSON.stringify(project))
+                    return
+                }
+            }
+            res.status(404).end(responses.notFound);
+        } else {
+            res.end(JSON.stringify(projects))
+        }
+    })
+    .patch((req, res) => {
+        if (!req.body) {
+            res.status(400).end(functions.createSingleResponse("Body_Is_Required"))
+            return
+        }
 
-// export const config = {
-//     api: {
-//         bodyParser: false, // Disallow body parsing, consume as stream
-//     },
-// };
+        const { id } = req.query
+        // @ts-ignore
+        let { mainImage, moreImages } = req.files
+        mainImage = mainImage ?? []
+        moreImages = moreImages ?? []
+        const uploadedImages = [...mainImage, ...moreImages]
+        const { title, description, clientsWord } = req.body
 
-// function saveData() {
-//     fs.writeFileSync(dataFilePath, JSON.stringify(testimonials))
-// }
+        if (!id) {
+            res.status(400).end(functions.createSingleResponse("Id_Is_Required"))
+            deleteMulterFiles(uploadedImages)
+        } else {
+            let oldProjectImages: { path: string }[] = []
+            let updatedProject: Project | undefined = undefined
+            for (const project of projects) {
+                if (project.id === id) {
+                    project.title = title ?? project.title
+                    project.description = description ?? project.description
+                    project.clientsWord = clientsWord ?? project.clientsWord
+                    if (mainImage[0]) {
+                        oldProjectImages = oldProjectImages.concat({ path: imagesRootPath + project.mainImage })
+                        project.mainImage = mainImage[0] ? imagesUrlRootPath + mainImage[0].filename : project.mainImage
+                    }
+                    if (moreImages.length) {
+                        oldProjectImages = oldProjectImages.concat(project.moreImages.map(imageUrl => ({ path: imagesRootPath + imageUrl })))
+                        project.moreImages = moreImages.map((image: { filename: string }) => imagesUrlRootPath + image.filename)
+                    }
+                    updatedProject = project
+                    deleteMulterFiles(oldProjectImages)
+                    break
+                }
+            }
+            if (updatedProject) {
+                saveData()
+                res.end(JSON.stringify(updatedProject))
+            } else {
+                res.status(404).end(responses.notFound)
+                deleteMulterFiles(uploadedImages)
+            }
+        }
+    })
+    .delete((req, res) => {
+        const { id } = req.query
+        if (!id) {
+            res.status(400).end(functions.createSingleResponse("Id_Is_Required"))
+        } else {
+            for (const [index, project] of projects.entries()) {
+                if (project.id === id) {
+                    projects.splice(index, 1)
+                    saveData()
+                    const deletedProjectImages = [{ path: imagesRootPath + project.mainImage }, ...project.moreImages.map(imageUrl => ({ path: imagesRootPath + imageUrl }))]
+                    deleteMulterFiles(deletedProjectImages)
+                    break
+                }
+            }
+            res.end(responses.ok)
+        }
+
+        // @ts-ignore
+        let { mainImage, moreImages } = req.files
+        const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+        deleteMulterFiles(uploadedImages)
+    })
+
+export const config = {
+    api: {
+        bodyParser: false
+    },
+};
+
+function saveData() {
+    fs.writeFileSync(dataFilePath, JSON.stringify(projects))
+}
+
+function deleteMulterFiles(files: any[]) {
+    files.forEach(file => functions.deleteFile(file.path))
+}

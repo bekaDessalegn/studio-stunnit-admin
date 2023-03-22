@@ -28,11 +28,17 @@ try {
 
 export default nextConnect<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
-        console.error("onError(testimonials):", err.stack);
+        console.error("onError(/testimonials):", err.stack);
         res.status(500).end(responses.internalError);
+        // @ts-ignore
+        const avatarFilepath = req.file?.path
+        if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
     },
     onNoMatch: (req, res) => {
         res.status(404).end(responses.notFound);
+        // @ts-ignore
+        const avatarFilepath = req.file?.path
+        if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
     }
 })
     .use(uploadMiddleware)
@@ -78,6 +84,10 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
     })
     .get((req, res) => {
         res.end(JSON.stringify(testimonials))
+
+        // @ts-ignore
+        const avatarFilepath = req.file?.path
+        if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
     })
     .patch((req, res) => {
         const { id } = req.query
@@ -125,6 +135,7 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
                 }
             } else {
                 res.status(404).end(responses.notFound)
+                if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
             }
         }
     })
@@ -145,11 +156,15 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
                 functions.deleteFile(imagesRootPath + deletedTestimonialAvatarUrl)
             }
         }
+
+        // @ts-ignore
+        const avatarFilepath = req.file?.path
+        if (avatarFilepath) { functions.deleteFile(avatarFilepath) }
     })
 
 export const config = {
     api: {
-        bodyParser: false, // Disallow body parsing, consume as stream
+        bodyParser: false
     },
 };
 
