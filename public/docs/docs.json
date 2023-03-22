@@ -1,0 +1,32 @@
+{
+  "Types": {
+    "project": {
+      "id": {
+        "type": "string",
+        "readonly": true
+      },
+      "title": {
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "type": "string",
+        "required": true
+      },
+      "mainImage": {
+        "type": "string",
+        "required": true
+      },
+      "moreImages": {
+        "type": "string[]"
+      },
+      "clientsWord": {
+        "type": "string"
+      },
+      "viewCount": {
+        "type": "Integer",
+        "readonly": true
+      }
+    }
+  }
+}
