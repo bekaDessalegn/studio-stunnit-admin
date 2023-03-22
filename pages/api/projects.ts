@@ -7,9 +7,9 @@ import { Project } from "../../types";
 import multer from 'multer';
 
 const dataFilePath = "./db/projects/data.json"
-const imagesDirPath = "./public/projects/images"
-const imagesUrlRootPath = "/projects/images/"
 const imagesRootPath = "./public"
+const imagesUrlRootPath = "/uploads/projects/images/"
+const imagesDirPath = imagesRootPath + imagesUrlRootPath
 const upload = multer({
     storage: multer.diskStorage({
         destination: imagesDirPath,
@@ -27,7 +27,7 @@ try {
 } catch (e) {
     projects = []
 }
-console.dir(projects,{depth:null})
+console.dir(projects, { depth: null })
 export default nextConnect<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
         // @ts-ignore

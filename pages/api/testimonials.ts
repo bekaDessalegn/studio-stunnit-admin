@@ -7,9 +7,9 @@ import { Testimonial } from "../../types";
 import multer from 'multer';
 
 const dataFilePath = "./db/testimonials/data.json"
-const imagesDirPath = "./public/testimonials/images"
-const imagesUrlRootPath = "/testimonials/images/"
 const imagesRootPath = "./public"
+const imagesUrlRootPath = "/uploads/testimonials/images/"
+const imagesDirPath = imagesRootPath + imagesUrlRootPath
 const maxRating = 5
 const upload = multer({
     storage: multer.diskStorage({
