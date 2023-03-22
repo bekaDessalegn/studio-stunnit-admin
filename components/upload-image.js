@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import UploadButton from './upload_button';
 
-export default function UploadImage() {
+export default function UploadImage({imageUrl}) {
   const [image, setImage] = useState(null);
 
   const hiddenClicked = () => {
@@ -19,12 +19,13 @@ export default function UploadImage() {
         <p className='font-bold my-2'>Main image</p>
       {image ? (
         <div>
-        <Image className='max-h-[150px] h-[150px] rounded-lg my-5' width={250} height={150} src={URL.createObjectURL(image)} />
+        <img className='max-w-[250px] h-[150px] rounded-lg my-5' src={URL.createObjectURL(image)} />
         </div>
-      ) : (
-        <div className="">
-        </div>
-      )}
+      ) : imageUrl ? (<Image
+        className={"max-w-[250px] h-[150px] rounded-lg my-5"}
+        src={imageUrl}
+    />) : (<div></div>)
+    }
       <div className="flex flex-col">
         <UploadButton onClick={hiddenClicked}/>
         <input

@@ -17,8 +17,8 @@ export default function EditProject({project}) {
         <Textform value={project.title} label="Title" />
         <DescriptionTF value={project.description} label="Description" />
         <ClientTF value={project.testimony} label="Client's word" />
-        <UploadImage />
-        <UploadListImages />
+        <UploadImage imageUrl={project.primaryImage} />
+        <UploadListImages imageUrls={project.imageUrl} />
         <div className=' my-10'>
         <Button2 name="Edit project" />
         </div>

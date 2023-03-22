@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import UploadButton from './upload_button';
+import {AiOutlineDelete} from 'react-icons/ai'
 
-export default function UploadListImages() {
+export default function UploadListImages({imageUrls}) {
   const [images, setImages] = useState([]);
 
   const hiddenClicked = () => {
@@ -20,6 +21,12 @@ export default function UploadListImages() {
     setImages(addedImages);
   };
 
+  function removeImage(index){
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+  }
+
   return (
     <div className="">
         <p className='font-bold'>More images</p>
@@ -28,12 +35,26 @@ export default function UploadListImages() {
         <div className="grid grid-cols-3 gap-[20px] my-5">
         {images.map((image, index) => (
           <div key={index}>
-            <Image className='max-h-[150px] h-[150px] rounded-lg' width={250} height={150} src={URL.createObjectURL(image)}/>
+            <div className='relative max-w-[250px] h-[150px] rounded-lg overflow-hidden'>
+            <img className='object-cover w-full h-full' src={URL.createObjectURL(image)}/>
+            <div onClick={() => removeImage(index)} class="absolute w-full py-2.5 bottom-0 inset-x-0 bg-dangerColor text-white text-xs text-center leading-4 cursor-pointer">Delete</div>
+            </div>
           </div>
         ))}
       </div>
       ) 
-      : (
+      : imageUrls ? (
+        <div className="grid grid-cols-3 gap-[20px] my-5">
+        {imageUrls.map((image, index) => (
+          <div key={index}>
+            <div className='relative max-w-[250px] h-[150px] rounded-lg overflow-hidden'>
+            <Image className='object-cover w-full h-full' src={image}/>
+            <div onClick={() => removeImage(index)} class="absolute w-full py-2.5 bottom-0 inset-x-0 bg-dangerColor text-white text-xs text-center leading-4 cursor-pointer">Delete</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      ) : (
         <div className="">
         </div>
       )}
