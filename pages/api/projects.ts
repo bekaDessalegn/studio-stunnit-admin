@@ -27,7 +27,6 @@ try {
 } catch (e) {
     projects = []
 }
-console.dir(projects, { depth: null })
 export default nextConnect<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
         // @ts-ignore
@@ -94,10 +93,14 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
         const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
         deleteMulterFiles(uploadedImages)
 
-        const { id } = req.query
+        const { id, incrementViewCount } = req.query
         if (id) {
             for (let project of projects) {
                 if (project.id === id) {
+                    if (incrementViewCount) {
+                        project.viewCount++
+                        saveData()
+                    }
                     res.end(JSON.stringify(project))
                     return
                 }
