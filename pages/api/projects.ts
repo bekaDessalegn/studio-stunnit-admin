@@ -30,7 +30,9 @@ try {
 export default nextConnect<NextApiRequest, NextApiResponse>({
     onError: (err, req, res, next) => {
         // @ts-ignore
-        let { mainImage, moreImages } = req.files
+        let mainImage = req.files?.mainImage
+        // @ts-ignore
+        let moreImages = req.files?.moreImages
         let uploadedImages
         if (err.code === "LIMIT_UNEXPECTED_FILE") {
             res.status(400).end(functions.createSingleResponse("Multiple_Main_Images_Found"));
@@ -44,10 +46,14 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
     },
     onNoMatch: (req, res) => {
         res.status(404).end(responses.notFound);
+
         // @ts-ignore
-        let { mainImage, moreImages } = req.files
-        const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
-        deleteMulterFiles(uploadedImages)
+        if (req.files) {
+            // @ts-ignore
+            let { mainImage, moreImages } = req.files
+            const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+            deleteMulterFiles(uploadedImages)
+        }
     }
 })
     .use(uploadMiddleware)
@@ -89,9 +95,12 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
     })
     .get((req, res) => {
         // @ts-ignore
-        let { mainImage, moreImages } = req.files
-        const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
-        deleteMulterFiles(uploadedImages)
+        if (req.files) {
+            // @ts-ignore
+            let { mainImage, moreImages } = req.files
+            const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+            deleteMulterFiles(uploadedImages)
+        }
 
         const { id, incrementViewCount } = req.query
         if (id) {
@@ -175,9 +184,12 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
         }
 
         // @ts-ignore
-        let { mainImage, moreImages } = req.files
-        const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
-        deleteMulterFiles(uploadedImages)
+        if (req.files) {
+            // @ts-ignore
+            let { mainImage, moreImages } = req.files
+            const uploadedImages = [...(mainImage ?? []), ...(moreImages ?? [])]
+            deleteMulterFiles(uploadedImages)
+        }
     })
 
 export const config = {
