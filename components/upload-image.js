@@ -21,7 +21,7 @@ export default function UploadImage({imageUrl}) {
         <div>
         <img className='max-w-[250px] h-[150px] rounded-lg my-5' src={URL.createObjectURL(image)} />
         </div>
-      ) : imageUrl ? (<Image
+      ) : imageUrl ? (<img
         className={"max-w-[250px] h-[150px] rounded-lg my-5"}
         src={imageUrl}
     />) : (<div></div>)

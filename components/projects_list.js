@@ -8,8 +8,7 @@ import Modal from './modal';
 
 export default function ProjectsList({projects}) {
 
-
-    const data = projects
+    const data = projects.projects
     const [currentProject, setCurrentProject] = useState(data[0])
     const [currentIndex, setCurrentIndex] = useState(0)
     const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +47,7 @@ export default function ProjectsList({projects}) {
                             // transition={{ duration: 2 }}
                             className=' grid h-full'
                         >
-                            <Image src={currentProject.primaryImage} className='h-[400px] w-screen mx-auto  object-cover' />
+                            <img src={currentProject.mainImage} className='h-[400px] w-screen mx-auto  object-cover' />
                         </motion.div>
                     </AnimatePresence>
                 </div>

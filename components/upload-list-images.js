@@ -48,7 +48,7 @@ export default function UploadListImages({imageUrls}) {
         {imageUrls.map((image, index) => (
           <div key={index}>
             <div className='relative max-w-[250px] h-[150px] rounded-lg overflow-hidden'>
-            <Image className='object-cover w-full h-full' src={image}/>
+            <img className='object-cover w-full h-full' src={image}/>
             <div onClick={() => removeImage(index)} class="absolute w-full py-2.5 bottom-0 inset-x-0 bg-dangerColor text-white text-xs text-center leading-4 cursor-pointer">Delete</div>
             </div>
           </div>
