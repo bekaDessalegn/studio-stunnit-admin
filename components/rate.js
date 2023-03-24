@@ -7,7 +7,13 @@ const Rating = ({rate}) => {
 
   const handleRating = (value) => {
     setRating(value);
+    setRatingValue(value)
   };
+
+  function setRatingValue(value) {
+    var rating = document.getElementById("ratingValue");
+    rating.value = value;
+  }
 
   return (
     <div className="flex items-center">
@@ -24,6 +30,7 @@ const Rating = ({rate}) => {
         );
       })}
       <span className="ml-2">{rating}/5</span>
+      <input id='ratingValue' name='rating' className='hidden' value={rating}/>
     </div>
   );
 };
