@@ -2,9 +2,41 @@
 import Link from 'next/link'
 import React from 'react'
 import RatingStars from './rating-stars'
+import { useState } from 'react';
+import Modal from './modal';
+import apiUrl from '../config';
 
-export default function TestimonialCard({ testimonial, onClick }) {
+export default function TestimonialCard({ testimonial }) {
+    const [isOpen, setIsOpen] = useState(false);
+
+  function handleOpenModal() {
+    setIsOpen(true);
+  }
+
+  function handleCloseModal() {
+    setIsOpen(false);
+  }
+
+  async function onDelete() {
+    let headersList = {
+        "Accept": "*/*"
+       }
+       
+       let response = await fetch(`${apiUrl}/testimonials?id=${testimonial.id}`, { 
+         method: "DELETE",
+         headers: headersList
+       });
+       
+       let data = await response.text();
+       console.log(data);
+       
+  }
+
     return (
+        <>
+        <Modal onClick={onDelete} isOpen={isOpen} onClose={handleCloseModal} title="Delete link">
+        <p>Are you sure you want to delete this testimonial ?</p>
+      </Modal>
         <div className='flex flex-col md:flex-row gap-10 md:gap-x-5 lg2:gap-x-2 items-center justify-around w-full h-fit md:h-full px-6 py-24 md:p-10 rounded-md bg-gray-300 scroll'>
             <div className='absolute top-4 right-8 space-x-4'>
                 <Link href={`/testimonials/${testimonial.id}/edit`}>
@@ -12,7 +44,7 @@ export default function TestimonialCard({ testimonial, onClick }) {
                     Edit
                 </span>
                 </Link>
-                <span className='text-dangerColor cursor-pointer' onClick={onClick}>
+                <span className='text-dangerColor cursor-pointer' onClick={handleOpenModal}>
                     Delete
                 </span>
             </div>
@@ -40,6 +72,6 @@ export default function TestimonialCard({ testimonial, onClick }) {
                 </div>
             </div>
         </div>
-
+        </>
     )
 }

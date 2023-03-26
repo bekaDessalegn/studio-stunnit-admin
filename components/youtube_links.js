@@ -23,7 +23,8 @@ const YoutubeLinks = ({sth}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [list, setList] = useState(items);
 
-  function handleOpenModal() {
+  function handleOpenModal(id) {
+    setLinkId(id)
     setIsOpen(true);
   }
 
@@ -66,9 +67,25 @@ const YoutubeLinks = ({sth}) => {
     newList[index].isEdit = false;
     setList(newList);
   }
+
+  async function onDelete() {
+    let headersList = {
+        "Accept": "*/*"
+       }
+       
+       let response = await fetch(`${apiUrl}/testimonial-youtube-links?id=${linkId}`, { 
+         method: "DELETE",
+         headers: headersList
+       });
+       
+       let data = await response.text();
+       console.log(data);
+       
+  }
+  
   return (
     <div>
-        <Modal isOpen={isOpen} onClose={handleCloseModal} title="Delete link">
+      <Modal onClick={onDelete} isOpen={isOpen} onClose={handleCloseModal} title="Delete link">
         <p>Are you sure you want to delete this link ?</p>
       </Modal>
     {links.map((link, index) => list[index].isEdit ? (
@@ -85,7 +102,7 @@ const YoutubeLinks = ({sth}) => {
             <p>{link.youtubeLink}</p>
             <div className='flex flex-row'>
                 <AiOutlineEdit onClick={() => handleOpenEdit(index, link.id)} className='w-[25px] h-[25px] mr-2 cursor-pointer' />
-                <AiOutlineDelete onClick={handleOpenModal} className='w-[25px] h-[25px] fill-dangerColor cursor-pointer' />
+                <AiOutlineDelete onClick={() => handleOpenModal(link.id)} className='w-[25px] h-[25px] fill-dangerColor cursor-pointer' />
             </div>
         </div>
     ))}

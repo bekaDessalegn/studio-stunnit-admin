@@ -69,7 +69,7 @@ export default function EditProject({project}) {
        let data = await response.text();
        console.log(data);
 
-       router.push('/projects');
+       router.push('/');
   }
 
   return (

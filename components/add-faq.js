@@ -12,7 +12,7 @@ const AddFAQ = () => {
 
   async function onSubmit(event){
     event.preventDefault();
-    if(event.target.category.value === ''){
+    if(event.target.category.value === 'Dropdown'){
       setIsCategoryNull(true);
     } else {
       setIsCategoryNull(false);

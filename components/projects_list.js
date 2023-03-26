@@ -4,6 +4,7 @@ import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
 import Image from 'next/image'
 import Link from 'next/link'
 import Modal from './modal';
+import apiUrl from '../config'
 
 
 export default function ProjectsList({projects}) {
@@ -21,10 +22,25 @@ export default function ProjectsList({projects}) {
         setIsOpen(false);
       }
 
+      async function onDelete() {
+        let headersList = {
+            "Accept": "*/*"
+           }
+           
+           let response = await fetch(`${apiUrl}/projects?id=${currentProject.id}`, { 
+             method: "DELETE",
+             headers: headersList
+           });
+           
+           let data = await response.text();
+           console.log(data);
+           
+      }
+
 
     return (
         <>
-        <Modal isOpen={isOpen} onClose={handleCloseModal} title="Delete project">
+        <Modal onClick={onDelete} isOpen={isOpen} onClose={handleCloseModal} title="Delete project">
         <p>Are you sure you want to delete this project ?</p>
       </Modal>
             <div className='flex justify-end'>
