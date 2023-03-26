@@ -29,25 +29,15 @@ export default function EditProject({project}) {
   }
 
   const handleListImageChange = (e) => {
-    const uploadedImages = e.target.files;
-    const newImages = [];
-
-    for (let i = 0; i < uploadedImages.length; i++) {
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadedImages[i]);
-
-      reader.onload = () => {
-        const imageData = reader.result;
-        const imageObject = {
-          name: uploadedImages[i].name,
-          type: uploadedImages[i].type,
-          size: uploadedImages[i].size,
-          data: imageData,
-        };
-        newImages.push(imageObject.data);
-        setImages([...images, ...newImages]);
-      };
+    var addedImages = []
+    const file = e.target.files;
+    for (let i = 0; i < file.length; i++) {
+        console.log("This is the file" + file[i])
+        addedImages.push(file[i])
     }
+    console.log("This is the list" + addedImages)
+    setImages([...images, ...addedImages]);
+
   };
 
   function removeImage(index){
@@ -69,12 +59,8 @@ export default function EditProject({project}) {
        bodyContent.append("mainImage", image);
        for(var ind = 0; ind < images.length; ind++){
 
-        const isUploadedImage = images[ind].startsWith('data:');
-        if(isUploadedImage){
-          const base64Data = images[ind].split(',')[1];
-          const mime = images[ind].split(',')[0].split(':')[1].split(';')[0];
-          const blob = new Blob([atob(base64Data)], { type: mime });
-          bodyContent.append("moreImages", blob, `${ind}.png`)
+        if(typeof(images[ind]) !== 'string'){
+          bodyContent.append("moreImages", images[ind])
         } else {
           const res = await fetch(`http://localhost:3000${images[ind]}`);
         const blob = await res.blob();
@@ -132,7 +118,7 @@ export default function EditProject({project}) {
         {images.map((image, index) => (
           <div key={index}>
             <div className='relative max-w-[250px] h-[150px] rounded-lg overflow-hidden'>
-            <img className='object-cover w-full h-full' src={image}/>
+            <img className='object-cover w-full h-full' src={typeof(image) === 'string' ? image : URL.createObjectURL(image)}/>
             <div onClick={() => removeImage(index)} class="absolute w-full py-2.5 bottom-0 inset-x-0 bg-dangerColor text-white text-xs text-center leading-4 cursor-pointer">Delete</div>
             </div>
           </div>
@@ -156,10 +142,6 @@ export default function EditProject({project}) {
           </button>
           </div>
         </form>
-        <Button2 onClick={() => {
-          console.log("This dsfffffffffffffffffff")
-          console.log(images)
-        }} name="CLick" />
         </div>
     </div>
   )
