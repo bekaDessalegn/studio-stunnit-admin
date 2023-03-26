@@ -29,14 +29,25 @@ export default function EditProject({project}) {
   }
 
   const handleListImageChange = (e) => {
-    var addedImages = []
-    const file = e.target.files;
-    for (let i = 0; i < file.length; i++) {
-        console.log("This is the file" + file[i])
-        addedImages.push(file[i])
+    const uploadedImages = e.target.files;
+    const newImages = [];
+
+    for (let i = 0; i < uploadedImages.length; i++) {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadedImages[i]);
+
+      reader.onload = () => {
+        const imageData = reader.result;
+        const imageObject = {
+          name: uploadedImages[i].name,
+          type: uploadedImages[i].type,
+          size: uploadedImages[i].size,
+          data: imageData,
+        };
+        newImages.push(imageObject.data);
+        setImages([...images, ...newImages]);
+      };
     }
-    console.log("This is the list" + addedImages)
-    setImages(addedImages);
   };
 
   function removeImage(index){
@@ -56,9 +67,20 @@ export default function EditProject({project}) {
        bodyContent.append("clientsWord", event.target.clientsWord.value);
        bodyContent.append("description", event.target.description.value);
        bodyContent.append("mainImage", image);
-       images.map((image) => {
-        bodyContent.append("moreImages", image);
-       })
+       for(var ind = 0; ind < images.length; ind++){
+
+        const isUploadedImage = images[ind].startsWith('data:');
+        if(isUploadedImage){
+          const base64Data = images[ind].split(',')[1];
+          const mime = images[ind].split(',')[0].split(':')[1].split(';')[0];
+          const blob = new Blob([atob(base64Data)], { type: mime });
+          bodyContent.append("moreImages", blob, `${ind}.png`)
+        } else {
+          const res = await fetch(`http://localhost:3000${images[ind]}`);
+        const blob = await res.blob();
+        bodyContent.append("moreImages", blob, `${ind}.png`);
+        }
+       }
        
        let response = await fetch(`${apiUrl}/projects?id=${project.id}`, { 
          method: "PATCH",
@@ -134,7 +156,12 @@ export default function EditProject({project}) {
           </button>
           </div>
         </form>
+        <Button2 onClick={() => {
+          console.log("This dsfffffffffffffffffff")
+          console.log(images)
+        }} name="CLick" />
         </div>
     </div>
   )
 }
+

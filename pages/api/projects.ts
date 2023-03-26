@@ -57,6 +57,11 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
     }
 })
     .use(uploadMiddleware)
+    .use((req, res, next) => {
+        // @ts-ignore
+        console.log(req.files)
+        next()      
+    })
     .post((req, res) => {
         // @ts-ignore
         if (!req.body) {
@@ -120,6 +125,7 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
         }
     })
     .patch((req, res) => {
+        console.log(req.body)
         if (!req.body) {
             res.status(400).end(functions.createSingleResponse("Body_Is_Required"))
             return
