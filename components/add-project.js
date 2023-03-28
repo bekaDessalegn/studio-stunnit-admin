@@ -74,13 +74,13 @@ export default function AddProject({ addProject }) {
   }
 
   return (
-    <div className='w-screen flex justify-center'>
-      <div className='w-3/5 items-center border-x-2 border-textFormBorderbg px-10'>
-        <div className='grid text-center gap-2 mb-5 mt-10'>
+    <div className='w-full flex justify-center'>
+      <div className='w-full items-center border-2 rounded-md border-textFormBorderbg px-10 py-10'>
+        <div className='grid text-center gap-2 mb-5'>
           <Heading heading='Add Project' />
         </div>
-        <form onSubmit={onSubmit} encType='multipart/form-data'>
-          <Textform label="Title" value="t"/>
+        <form onSubmit={onSubmit} encType='multipart/form-data' className='space-y-5'>
+          <Textform label="Title" value="t" />
           <DescriptionTF label="Description" value="d" />
           <ClientTF label="Client's word" />
           <div className="">
@@ -133,16 +133,15 @@ export default function AddProject({ addProject }) {
                 accept="image/*"
                 id='hiddenListFile'
                 onChange={handleListImageChange}
-                className="mb-4 invisible"
+                className="mb-4 hidden"
                 multiple
               />
             </div>
           </div>
-          <div className=' my-10'>
-            <button type='submit' className='w-full'>
-              <Button2 name="Add project" />
-            </button>
-          </div>
+          <div className='h-3'></div>
+          <button type='submit' className='w-full'>
+            <Button2 name="Add project" />
+          </button>
         </form>
       </div>
     </div>

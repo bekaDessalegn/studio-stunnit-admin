@@ -19,85 +19,89 @@ export default function Navbar() {
     useEffect(() => {
         currentPage = router.pathname
     }, [router])
-  
+
     function handleOpenModal() {
-      setIsOpen(true);
+        setIsOpen(true);
     }
-  
+
     function handleCloseModal() {
-      setIsOpen(false);
+        setIsOpen(false);
     }
     return (
         <div>
             <Modal isOpen={isOpen} onClose={handleCloseModal} title="Log out">
-        <p>Are you sure you want to logout ?</p>
-      </Modal>
-        <LeftRightAligner>
-            <div className=' py-3 grid grid-flow-col border-b-textFormBorderbg border-b-2'>
-                {/* logo start */}
-                <div className='mr-auto my-auto grid'>
-                    <Link href="/"><Image className='max-w-[70px]' src={logo} /></Link>
+                <p>Are you sure you want to logout ?</p>
+            </Modal>
+            <LeftRightAligner>
+                <div className='px-4'>
+                    <div className=' py-3 grid grid-flow-col border-b'>
+                        {/* logo start */}
+                        <div className='mr-auto my-auto grid'>
+                            <Link href="/"><Image className='max-w-[70px]' src={logo} /></Link>
+                        </div>
+                        {/* nav items start */}
+                        <div className=' ml-auto my-auto grid grid-flow-col gap-8'>
+                            <div className='my-auto grid-flow-col gap-8 hidden md:grid'>
+                                <NavbarItem name='Projects' path="/" />
+                                <NavbarItem name='Testimonials' path="/testimonials" />
+                                <NavbarItem name='Testimonial Link' path="/testimonial_link" />
+                                <NavbarItem name='FAQ' path="/faq" />
+                            </div>
+                            <div className='invisible md:visible w-full'>
+                                <Button onClick={handleOpenModal} name='log out' />
+                            </div>
+                            <div className='my-auto grid md:hidden cursor-pointer'>
+                                <div onClick={() => toggleDrawer(true)}>
+                                    <FiMenu className='w-[40px] h-[40px]' />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <Drawer
+                        anchor='right'
+                        open={drawerState}
+                        onClose={() => toggleDrawer(false)}
+                    >
+                        <div className='flex flex-col justify-between h-full pb-8 px-8 pr-16'>
+                            <div className='space-y-5'>
+                                <div className='py-6 border-b'>
+                                    <Link href="/"><Image className='max-w-[70px]' src={logo} /></Link>
+                                </div>
+                                <div className='grid-flow-row grid space-y-2'>
+                                    <Link href='/'>
+                                        <div className={router.pathname == '/' ? 'text-[18px] py-1  text-primary' : 'text-[18px] py-1 '}>
+                                            Projects
+                                        </div>
+                                    </Link>
+                                    <Link href='/testimonials'>
+                                        <div className={router.pathname == '/testimonials' ? 'text-[18px] py-1  text-primary' : 'text-[18px] py-1 '}>
+                                            Testimonials
+                                        </div>
+                                    </Link>
+                                    <Link href='/testimonial_link'>
+                                        <div className={router.pathname == '/testimonial_link' ? 'text-[18px] py-1  text-primary' : 'text-[18px] py-1 '}>
+                                            Testimonial Link
+                                        </div>
+                                    </Link>
+                                    <Link href='/faq'>
+                                        <div className={router.pathname == '/faq' ? 'text-[18px] py-1  text-primary' : 'text-[18px] py-1 '}>
+                                            FAQ&apos;s
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div>
+                                <div onClick={() => {
+                                    toggleDrawer(false);
+                                    handleOpenModal();
+                                }} className='bg-accentColor w-full py-2 text-center text-white font-bold rounded-lg cursor-pointer'>
+                                    Logout
+                                </div>
+                            </div>
+                        </div>
+                    </Drawer>
                 </div>
-                {/* nav items start */}
-                <div className=' ml-auto my-auto grid grid-flow-col gap-8'>
-                    <div className='my-auto grid-flow-col gap-8 hidden md:grid'>
-                        <NavbarItem name='Projects' path="/" />
-                        <NavbarItem name='Testimonials' path="/testimonials" />
-                        <NavbarItem name='Testimonial Link' path="/testimonial_link" />
-                        <NavbarItem name='FAQ' path="/faq" />
-                    </div>
-                    <div className='invisible md:visible w-full'>
-                    <Button onClick={handleOpenModal} name='log out' />
-                    </div>
-                    <div className='my-auto grid md:hidden cursor-pointer'>
-                        <div onClick={() => toggleDrawer(true)}>
-                            <FiMenu className='w-[40px] h-[40px]' />
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <Drawer
-                anchor='right'
-                open={drawerState}
-                onClose={() => toggleDrawer(false)}
-            >
-                <div className='flex justify-center mt-6'>
-                    <Link href="/"><Image className='max-w-[70px]' src={logo} /></Link>
-                </div>
-                <div className='grid-flow-row grid my-5 mx-5'>
-                    <Link href='/'>
-                        <div className={router.pathname == '/' ? 'text-[18px] py-1 font-bold text-primary' : 'text-[18px] py-1 font-bold'}>
-                            Projects
-                        </div>
-                    </Link>
-                    <Link href='/testimonials'>
-                        <div className={router.pathname == '/testimonials' ? 'text-[18px] py-1 font-bold text-primary' : 'text-[18px] py-1 font-bold'}>
-                        Testimonials
-                        </div>
-                    </Link>
-                    <Link href='/testimonial_link'>
-                        <div className={router.pathname == '/testimonial_link' ? 'text-[18px] py-1 font-bold text-primary' : 'text-[18px] py-1 font-bold'}>
-                        Testimonial Link
-                        </div>
-                    </Link>
-                    <Link href='/faq'>
-                    <div className={router.pathname == '/faq' ? 'text-[18px] py-1 font-bold text-primary' : 'text-[18px] py-1 font-bold'}>
-                            FAQ&apos;s
-                        </div>
-                    </Link>
-                </div>
-                <div className='flex flex-row'>
-                <div onClick={() => {
-                    toggleDrawer(false);
-                    handleOpenModal();
-                    }} className='bg-accentColor w-full py-2 text-center text-white font-bold rounded-lg ml-5 cursor-pointer'>
-                        Logout
-                    </div>
-                    <div className='w-5'></div>
-                    </div>
-            </Drawer>
-        </LeftRightAligner>
+            </LeftRightAligner>
         </div>
     )
 }

@@ -2,14 +2,17 @@ import React from 'react'
 import Navbar from '../components/navbar'
 import AddTestimonialLink from '../components/add-testimonial-link'
 import apiUrl from '../config'
+import LeftRightAligner from '../components/left-right-aligner'
 
-const testimonials = ({links}) => {
+const testimonials = ({ links }) => {
   return (
     <>
       <main className='' >
         <Navbar />
-        <AddTestimonialLink links={links} />
-    </main>
+        <LeftRightAligner>
+          <AddTestimonialLink links={links} />
+        </LeftRightAligner>
+      </main>
     </>
   )
 }
@@ -21,18 +24,18 @@ export async function getStaticProps() {
     let res = await fetch(`${apiUrl}/testimonial-youtube-links`);
     let data = await res.text();
     return {
-        props : {
-          links: data,
-        }
+      props: {
+        links: data,
+      }
     };
   } catch (error) {
     console.error(error)
 
     return {
-      props : {
-          links : [],
-          error : error
+      props: {
+        links: [],
+        error: error
       }
-  };
+    };
   }
 }

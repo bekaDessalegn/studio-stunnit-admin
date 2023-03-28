@@ -3,6 +3,7 @@ import Navbar from '../../components/navbar'
 import AddFAQ from '../../components/add-faq'
 import FaqList from '../../components/faq_list'
 import apiUrl from '../../config'
+import LeftRightAligner from '../../components/left-right-aligner'
 
 const faq = ({ faqs }) => {
   const [allFaqs, setAllFaqs] = useState(faqs)
@@ -10,8 +11,12 @@ const faq = ({ faqs }) => {
     <>
       <main className='' >
         <Navbar />
-        <FaqList faqs={allFaqs} />
-        <AddFAQ addFaq={faq => setAllFaqs([...allFaqs, faq])} />
+        <LeftRightAligner>
+          <FaqList faqs={allFaqs} />
+          <div className='h-8'></div>
+          <AddFAQ addFaq={faq => setAllFaqs([...allFaqs, faq])} />
+        </LeftRightAligner>
+        <div className='h-8'></div>
       </main>
     </>
   )

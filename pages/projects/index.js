@@ -4,6 +4,7 @@ import AddProject from '../../components/add-project'
 import ProjectsList from '../../components/projects_list'
 import apiUrl from '../../config'
 import { useEffect, useState } from 'react'
+import LeftRightAligner from '../../components/left-right-aligner'
 
 const projects = ({ projects }) => {
         const [allProjects, setAllProjects] = useState(projects)
@@ -17,7 +18,11 @@ const projects = ({ projects }) => {
                 <main className='' >
                         <Navbar />
                         <ProjectsList projects={allProjects} />
-                        <AddProject addProject={project => setAllProjects({ projects: [...allProjects.projects, project] })} />
+                        <div className='h-8'></div>
+                        <LeftRightAligner>
+                                <AddProject addProject={project => setAllProjects({ projects: [...allProjects.projects, project] })} />
+                        </LeftRightAligner>
+                        <div className='h-8'></div>
                 </main>
         </>
 }
