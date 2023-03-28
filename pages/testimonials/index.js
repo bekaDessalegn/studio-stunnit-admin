@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../../components/navbar'
 import AddTestimonial from '../../components/add-testimonials'
 import TestimonialsList from '../../components/testimonials_list'
 import apiUrl from '../../config'
 
 const testimonials = ({testimonials}) => {
+  const [allTestimonials, setAllTestimonials] = useState(testimonials)
   return (
     <>
       <main className='' >
         <Navbar />
-        <TestimonialsList testimonials={testimonials}/>
-        <AddTestimonial />
+        <TestimonialsList testimonials={allTestimonials}/>
+        <AddTestimonial addTestimonial={testimonial => setAllTestimonials([...allTestimonials, testimonial])} />
     </main>
     </>
   )

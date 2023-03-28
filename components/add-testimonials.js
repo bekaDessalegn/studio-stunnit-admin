@@ -9,7 +9,7 @@ import apiUrl from '../config'
 import { useState } from 'react'
 import UploadButton from './upload_button';
 
-const AddTestimonial = () => {
+const AddTestimonial = ({ addTestimonial }) => {
   const [isImageNull, setIsImageNull] = useState(false)
 
   const [image, setImage] = useState(null);
@@ -46,7 +46,7 @@ const AddTestimonial = () => {
        });
        
        let data = await response.text();
-       console.log(data);
+       addTestimonial(JSON.parse(data))
     }
   }
 

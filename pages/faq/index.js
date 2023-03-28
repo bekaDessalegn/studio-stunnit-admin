@@ -1,17 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../../components/navbar'
 import AddFAQ from '../../components/add-faq'
 import FaqList from '../../components/faq_list'
 import apiUrl from '../../config'
 
-const faq = ({faqs}) => {
+const faq = ({ faqs }) => {
+  const [allFaqs, setAllFaqs] = useState(faqs)
   return (
     <>
       <main className='' >
         <Navbar />
-        <FaqList faqs={faqs}/>
-        <AddFAQ />
-    </main>
+        <FaqList faqs={allFaqs} />
+        <AddFAQ addFaq={faq => setAllFaqs([...allFaqs, faq])} />
+      </main>
     </>
   )
 }
@@ -19,22 +20,22 @@ const faq = ({faqs}) => {
 export default faq
 
 export async function getStaticProps() {
-    try {
-      let res = await fetch(`${apiUrl}/faqs`);
-      let faqs = await res.json();
-      return {
-          props : {
-            faqs,
-          }
-      };
-    } catch (error) {
-      console.error(error)
-
-      return {
-        props : {
-            faqs : [],
-            error : error
-        }
+  try {
+    let res = await fetch(`${apiUrl}/faqs`);
+    let faqs = await res.json();
+    return {
+      props: {
+        faqs,
+      }
     };
-    }
+  } catch (error) {
+    console.error(error)
+
+    return {
+      props: {
+        faqs: [],
+        error: error
+      }
+    };
+  }
 }

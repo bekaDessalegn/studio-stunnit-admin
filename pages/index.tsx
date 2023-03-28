@@ -33,3 +33,11 @@ export async function getStaticProps() {
   };
   }
 }
+
+
+
+// function addProject(project: any) {
+//   console.log("ccccccccccccccccccccccccccccccccccccccc")
+//   console.log(projects)
+//   // projects.push(project)
+// }
