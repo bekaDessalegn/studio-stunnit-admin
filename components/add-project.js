@@ -80,8 +80,8 @@ export default function AddProject({ addProject }) {
           <Heading heading='Add Project' />
         </div>
         <form onSubmit={onSubmit} encType='multipart/form-data' className='space-y-5'>
-          <Textform label="Title" value="t" />
-          <DescriptionTF label="Description" value="d" />
+          <Textform label="Title" />
+          <DescriptionTF label="Description"  />
           <ClientTF label="Client's word" />
           <div className="">
             <p className='font-bold mt-2'>Main Image</p>

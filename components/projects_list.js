@@ -47,7 +47,7 @@ export default function ProjectsList({ projects }) {
                 <Link href={`/projects/${currentProject.id}/edit`}><div className='text-xl font-bold text-primary mr-2 cursor-pointer'>Edit</div></Link>
                 <div onClick={handleOpenModal} className='text-xl font-bold mr-5 text-dangerColor cursor-pointer'>Delete</div>
             </div>
-            <div className="relative grid bg-center h-[650px]">
+            <div className="relative grid bg-center h-[650px] max-h-[70vh] w-full">
                 {/* <Image src={image2} alt='place' className='opacity-0 mx-auto cover max-h-screen max-w-screen' /> */}
                 <div className='w-full h-full grid my-auto'>
                     <div className='m-auto'>
@@ -63,7 +63,7 @@ export default function ProjectsList({ projects }) {
                                 // transition={{ duration: 2 }}
                                 className=' grid h-full'
                             >
-                                <img src={currentProject.mainImage} className='h-[650px] w-screen mx-auto  object-cover' />
+                                <img src={currentProject.mainImage} className='h-[650px] max-h-[70vh] w-screen mx-auto  object-cover rounded-md' />
                             </motion.div>
                         </AnimatePresence>
                     </div>
@@ -77,7 +77,6 @@ export default function ProjectsList({ projects }) {
                 {/* section heading end */}
 
                 <div className='absolute bottom-5 w-full'>
-
                     <div className=' flex justify-between px-5 sm:px-10 lg:px-0 mx-auto max-w-[1000px]'>
                         <div className='ml-3 text-3xl font-medium underline text-onPrimary'>
                             {currentProject.title}

@@ -13,7 +13,7 @@ const faq = ({ faqs }) => {
         <Navbar />
         <LeftRightAligner>
           <FaqList faqs={allFaqs} />
-          <div className='h-8'></div>
+          <div className='h-16'></div>
           <AddFAQ addFaq={faq => setAllFaqs([...allFaqs, faq])} />
         </LeftRightAligner>
         <div className='h-8'></div>

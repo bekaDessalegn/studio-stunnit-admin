@@ -17,9 +17,10 @@ const projects = ({ projects }) => {
                 </Head>
                 <main className='' >
                         <Navbar />
-                        <ProjectsList projects={allProjects} />
-                        <div className='h-8'></div>
                         <LeftRightAligner>
+                                <div className='h-8'></div>
+                                <ProjectsList projects={allProjects} />
+                                <div className='h-16'></div>
                                 <AddProject addProject={project => setAllProjects({ projects: [...allProjects.projects, project] })} />
                         </LeftRightAligner>
                         <div className='h-8'></div>
