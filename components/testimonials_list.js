@@ -9,7 +9,7 @@ export default function TestimonialsList({testimonials}) {
   return (
     <>
     <LeftRightAligner>
-            <div className='grid gap-6 my-16'>
+            <div className='grid mt-16'>
 
                 <div className='grid text-center gap-2'>
                     <Heading heading='Testimonials' />

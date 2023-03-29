@@ -12,7 +12,6 @@ const testimonials = ({ testimonials }) => {
       <main className='' >
         <Navbar />
         <TestimonialsList testimonials={allTestimonials} />
-        <div className='h-8'></div>
         <LeftRightAligner>
           <AddTestimonial addTestimonial={testimonial => setAllTestimonials([...allTestimonials, testimonial])} />
         </LeftRightAligner>
