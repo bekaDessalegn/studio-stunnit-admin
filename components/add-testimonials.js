@@ -6,13 +6,25 @@ import Rating from './rate'
 import UploadTestimonialImage from './upload-testimonial-image'
 import Heading from './heading'
 import apiUrl from '../config'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import UploadButton from './upload_button';
+import CircularProgress from '@mui/joy/CircularProgress';
 
 const AddTestimonial = ({ addTestimonial }) => {
   const [isImageNull, setIsImageNull] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleButtonClick = () => {
+    // Scroll to the top of the page when the button is clicked
+    window.scrollTo(0, 0);
+  };
 
   const hiddenClicked = () => {
     document.getElementById("hiddenFile").click();
@@ -28,6 +40,7 @@ const AddTestimonial = ({ addTestimonial }) => {
       setIsImageNull(true);
     } else {
       setIsImageNull(false);
+      setLoading(true);
       let headersList = {
         "Accept": "*/*"
       }
@@ -46,7 +59,9 @@ const AddTestimonial = ({ addTestimonial }) => {
       });
 
       let data = await response.text();
-      addTestimonial(JSON.parse(data))
+      addTestimonial(JSON.parse(data));
+      handleButtonClick();
+      setLoading(false);
     }
   }
 
@@ -86,9 +101,11 @@ const AddTestimonial = ({ addTestimonial }) => {
               <p>Please select an image</p>
             </div>))
           }
-          <button type='submit' className='w-full'>
+          {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (<button type='submit' className='w-full'>
             <Button2 name="Add testimonial" />
-          </button>
+          </button>)}
         </form>
       </div>
     </div>

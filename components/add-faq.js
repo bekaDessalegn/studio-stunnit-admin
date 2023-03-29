@@ -5,16 +5,29 @@ import Button2 from './button2'
 import Dropdown from './dropdown'
 import Heading from './heading'
 import apiUrl from '../config'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import CircularProgress from '@mui/joy/CircularProgress';
 
 const AddFAQ = ({ addFaq }) => {
   const [isCategoryNull, setIsCategoryNull] = useState(false)
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleButtonClick = () => {
+    // Scroll to the top of the page when the button is clicked
+    window.scrollTo(0, 0);
+  };
 
   async function onSubmit(event) {
     event.preventDefault();
     if (event.target.category.value === 'Dropdown') {
       setIsCategoryNull(true);
     } else {
+      setLoading(true)
       setIsCategoryNull(false);
       let headersList = {
         "Accept": "*/*",
@@ -34,6 +47,8 @@ const AddFAQ = ({ addFaq }) => {
       });
       let data = await response.text();
       addFaq(JSON.parse(data))
+      handleButtonClick();
+      setLoading(false)
     }
   }
 
@@ -55,9 +70,12 @@ const AddFAQ = ({ addFaq }) => {
               </div>))
             }
           </div>
-          <button type='submit' className='w-full'>
+          {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (
+            <button type='submit' className='w-full'>
             <Button2 name="Add FAQ" />
-          </button>
+          </button>)}
         </form>
       </div>
     </div>

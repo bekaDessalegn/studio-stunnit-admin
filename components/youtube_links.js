@@ -7,21 +7,11 @@ import LinkTextformfield from './linkTF';
 import apiUrl from '../config';
 
 const YoutubeLinks = ({sth}) => {
-  const [linkId, setLinkId] = useState()
-
-  const links = JSON.parse(sth)
-
-  const items = []
-
-  for(let i = 0; i < links.length; i++){
-    items.push({
-      link: links[i].youtubeLink,
-      isEdit: false
-    })
-  }
-
+  const [deleteLinkId, setLinkId] = useState()
+  const [editLinkId, setEditLinkId] = useState()
   const [isOpen, setIsOpen] = useState(false);
-  const [list, setList] = useState(items);
+
+  const links = sth;
 
   function handleOpenModal(id) {
     setLinkId(id)
@@ -32,11 +22,8 @@ const YoutubeLinks = ({sth}) => {
     setIsOpen(false);
   }
 
-  function handleOpenEdit(index, id) {
-    setLinkId(id)
-    const newList = [...items];
-    newList[index].isEdit = true;
-    setList(newList);
+  function handleOpenEdit(id) {
+    setEditLinkId(id)
   }
 
   async function onSubmit(event, index) {
@@ -51,7 +38,7 @@ const YoutubeLinks = ({sth}) => {
        "youtubeLink" : event.target.link.value,
      });
      
-     let response = await fetch(`${apiUrl}/testimonial-youtube-links?id=${linkId}`, { 
+     let response = await fetch(`${apiUrl}/testimonial-youtube-links?id=${editLinkId}`, { 
        method: "PATCH",
        body: bodyContent,
        headers: headersList
@@ -59,13 +46,12 @@ const YoutubeLinks = ({sth}) => {
      
      let data = await response.text();
      console.log(data);
-     handleCloseEdit(index);
+     handleCloseEdit();
+     
   }
 
-  function handleCloseEdit(index) {
-    const newList = [...items];
-    newList[index].isEdit = false;
-    setList(newList);
+  function handleCloseEdit() {
+    setEditLinkId(0)
   }
 
   async function onDelete() {
@@ -73,7 +59,7 @@ const YoutubeLinks = ({sth}) => {
         "Accept": "*/*"
        }
        
-       let response = await fetch(`${apiUrl}/testimonial-youtube-links?id=${linkId}`, { 
+       let response = await fetch(`${apiUrl}/testimonial-youtube-links?id=${deleteLinkId}`, { 
          method: "DELETE",
          headers: headersList
        });
@@ -88,7 +74,8 @@ const YoutubeLinks = ({sth}) => {
       <Modal onClick={onDelete} isOpen={isOpen} onClose={handleCloseModal} title="Delete link">
         <p>Are you sure you want to delete this link ?</p>
       </Modal>
-    {links.map((link, index) => list[index].isEdit ? (
+    {links.map((link, index) => editLinkId === link.id ?
+     (
       <form onSubmit={(e) => onSubmit(e, index)}>
     <div className='flex flex-row'>
         <div className='w-full mt-2'>
@@ -97,15 +84,18 @@ const YoutubeLinks = ({sth}) => {
         <button type='submit'>
         <MdDone className='w-[30px] h-[30px] mr-2 cursor-pointer text-accentColor font-bold mt-2 ml-2' />
         </button>
-      </div></form>) : (
+      </div></form>) 
+      : 
+      (
         <div key={index} className=' border-2 border-textFormBorderbg p-2 rounded-lg flex justify-between mt-3'>
             <p>{link.youtubeLink}</p>
             <div className='flex flex-row'>
-                <AiOutlineEdit onClick={() => handleOpenEdit(index, link.id)} className='w-[25px] h-[25px] mr-2 cursor-pointer' />
+                <AiOutlineEdit onClick={() => handleOpenEdit(link.id)} className='w-[25px] h-[25px] mr-2 cursor-pointer' />
                 <AiOutlineDelete onClick={() => handleOpenModal(link.id)} className='w-[25px] h-[25px] fill-dangerColor cursor-pointer' />
             </div>
         </div>
-    ))}
+    )
+    )}
     </div>
   )
 }

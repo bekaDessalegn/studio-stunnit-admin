@@ -6,12 +6,17 @@ import Dropdown from './dropdown'
 import Heading from './heading'
 import apiUrl from '../config'
 import { useRouter } from 'next/router'
+import CircularProgress from '@mui/joy/CircularProgress';
+import { useState } from 'react'
 
 const EditFAQ = ({faq}) => {
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+
   async function onSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     let headersList = {
       "Accept": "*/*",
       "Content-Type": "application/json"
@@ -32,6 +37,8 @@ const EditFAQ = ({faq}) => {
      let data = await response.text();
      console.log(data);
 
+     setLoading(false);
+
      router.push('/faq');
   }
 
@@ -47,9 +54,11 @@ const EditFAQ = ({faq}) => {
           <p className='font-bold mb-1'>Category</p>
           <Dropdown category={faq.category} />
           <div className=' my-10'>
-            <button type='submit' className='w-full'>
+            {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (<button type='submit' className='w-full'>
           <Button2 name="Edit FAQ" />
-          </button>
+          </button>)}
           </div>
         </form>
         </div>

@@ -5,11 +5,13 @@ import ClientTF from './clientTF'
 import Button2 from './button2'
 import Heading from './heading'
 import apiUrl from '../config'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import UploadButton from './upload_button'
+import CircularProgress from '@mui/joy/CircularProgress';
 
 export default function AddProject({ addProject }) {
   const [isImageNull, setIsImageNull] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const [image, setImage] = useState(null);
   const [images, setImages] = useState([]);
@@ -17,6 +19,16 @@ export default function AddProject({ addProject }) {
   const hiddenClicked = () => {
     document.getElementById("hiddenFile").click();
   }
+
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleButtonClick = () => {
+    // Scroll to the top of the page when the button is clicked
+    window.scrollTo(0, 0);
+  };
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -49,6 +61,7 @@ export default function AddProject({ addProject }) {
       setIsImageNull(true);
     } else {
       setIsImageNull(false);
+      setLoading(true)
       let headersList = {
         "Accept": "*/*"
       }
@@ -70,6 +83,8 @@ export default function AddProject({ addProject }) {
 
       let data = await response.text();
       addProject(data)
+      handleButtonClick();
+      setLoading(false)
     }
   }
 
@@ -139,9 +154,11 @@ export default function AddProject({ addProject }) {
             </div>
           </div>
           <div className='h-3'></div>
-          <button type='submit' className='w-full'>
+          {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (<button type='submit' className='w-full'>
             <Button2 name="Add project" />
-          </button>
+          </button>)}
         </form>
       </div>
     </div>

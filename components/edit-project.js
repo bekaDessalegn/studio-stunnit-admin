@@ -8,6 +8,7 @@ import UploadButton from './upload_button'
 import { useState } from 'react'
 import apiUrl from '../config'
 import { useRouter } from 'next/router'
+import CircularProgress from '@mui/joy/CircularProgress';
 
 export default function EditProject({project}) {
 
@@ -15,6 +16,7 @@ export default function EditProject({project}) {
 
   const [image, setImage] = useState(null);
   const [images, setImages] = useState(project.moreImages);
+  const [loading, setLoading] = useState(false);
 
   const hiddenClicked = () => {
     document.getElementById("hiddenFile").click();
@@ -48,6 +50,7 @@ export default function EditProject({project}) {
 
   async function onSubmit(event){
     event.preventDefault();
+    setLoading(true);
       let headersList = {
         "Accept": "*/*"
        }
@@ -76,6 +79,7 @@ export default function EditProject({project}) {
        
        let data = await response.text();
        console.log(data);
+       setLoading(false);
 
        router.push('/');
   }
@@ -137,9 +141,11 @@ export default function EditProject({project}) {
       </div>
     </div>
           <div className=' my-10'>
-            <button type='submit' className='w-full'>
+            {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (<button type='submit' className='w-full'>
           <Button2 name="Edit project" />
-          </button>
+          </button>)}
           </div>
         </form>
         </div>

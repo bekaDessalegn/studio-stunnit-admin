@@ -9,9 +9,11 @@ import apiUrl from '../config'
 import { useRouter } from 'next/router'
 import UploadButton from './upload_button';
 import { useState } from 'react'
+import CircularProgress from '@mui/joy/CircularProgress';
 
 const EditTestimonial = ({testimonial}) => {
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
 
   const hiddenClicked = () => {
@@ -26,6 +28,7 @@ const EditTestimonial = ({testimonial}) => {
   
   async function onSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     let headersList = {
       "Accept": "*/*"
      }
@@ -45,6 +48,8 @@ const EditTestimonial = ({testimonial}) => {
      
      let data = await response.text();
      console.log(data);
+
+     setLoading(false);
 
      router.push('/testimonials');
   }
@@ -84,9 +89,11 @@ const EditTestimonial = ({testimonial}) => {
       </div>
     </div>
           <div className=' my-10'>
-            <button type='submit' className='w-full'>
+            {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (<button type='submit' className='w-full'>
           <Button2 name="Edit testimonial" />
-          </button>
+          </button>)}
           </div>
         </form>
         </div>
