@@ -7,7 +7,7 @@ import Modal from './modal';
 import apiUrl from '../config'
 
 
-export default function ProjectsList({ projects }) {
+export default function ProjectsList({ projects, deleteProject }) {
 
     const data = projects.projects
     const [currentProject, setCurrentProject] = useState(data[0])
@@ -23,6 +23,8 @@ export default function ProjectsList({ projects }) {
     }
 
     async function onDelete() {
+        deleteProject(currentProject.id)
+        setIsOpen(false);
         let headersList = {
             "Accept": "*/*"
         }
