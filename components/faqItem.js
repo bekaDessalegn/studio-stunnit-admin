@@ -9,6 +9,7 @@ const FaqItem = ({ items }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isOpen, setIsOpen] = useState(false);
   const [faqId, setFaqId] = useState()
+  const [allItems, setAllItems] = useState(items)
 
   function handleOpenModal(id) {
     setFaqId(id)
@@ -24,6 +25,8 @@ const FaqItem = ({ items }) => {
   }
 
   async function onDelete() {
+    setAllItems([...(allItems.filter(item => item.id !== faqId))])
+    setIsOpen(false);
     let headersList = {
       "Accept": "*/*"
     }
@@ -33,17 +36,16 @@ const FaqItem = ({ items }) => {
       headers: headersList
     });
 
-    let data = await response.text();
-    console.log(data);
-
   }
 
   return (
     <div className="accordion w-full flex flex-col justify-center items-center">
       <Modal onClick={onDelete} isOpen={isOpen} onClose={handleCloseModal} title="Delete link">
-        <p>Are you sure you want to delete this FAQ ?</p>
+        <p>
+          Are you sure you want to delete this FAQ?
+        </p>
       </Modal>
-      {items.map((item, index) => (
+      {allItems.map((item, index) => (
         <div className={`accordion-item ${index === activeIndex ? 'active' : ''} w-full bg-surface`} key={index}>
           <div className="accordion-item-title" onClick={() => handleClick(index)}>
             <div className='font-semibold'>{item.question}</div>

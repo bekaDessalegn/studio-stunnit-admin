@@ -14,7 +14,11 @@ const faq = ({ faqs }) => {
         <LeftRightAligner>
           <FaqList faqs={allFaqs} />
           <div className='h-16'></div>
-          <AddFAQ addFaq={faq => setAllFaqs([...allFaqs, faq])} />
+          <AddFAQ addFaq={faq => {
+            // console.log(allFaqs)
+            setAllFaqs([faq, ...allFaqs])
+            // console.log(allFaqs)
+          }} />
         </LeftRightAligner>
         <div className='h-8'></div>
       </main>
