@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import Modal from './modal';
 import { Drawer } from '@mui/material';
 import { useRouter } from 'next/router'
+import cookieCutter from 'cookie-cutter'
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -91,10 +92,7 @@ export default function Navbar() {
                                 </div>
                             </div>
                             <div>
-                                <div onClick={() => {
-                                    toggleDrawer(false);
-                                    handleOpenModal();
-                                }} className='bg-accentColor w-full py-2 text-center text-white font-bold rounded-lg cursor-pointer'>
+                                <div onClick={logout} className='bg-accentColor w-full py-2 text-center text-white font-bold rounded-lg cursor-pointer'>
                                     Logout
                                 </div>
                             </div>
@@ -104,4 +102,8 @@ export default function Navbar() {
             </LeftRightAligner>
         </div>
     )
+    function logout() {
+        cookieCutter.set('signed-in', false)
+        router.replace('/signin')
+    }
 }

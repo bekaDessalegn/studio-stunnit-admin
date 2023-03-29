@@ -43,9 +43,9 @@ const EditFAQ = ({faq}) => {
   }
 
   return (
-    <div className='w-screen flex justify-center'>
-        <div className='w-3/5 items-center border-x-2 border-textFormBorderbg px-10 '>
-        <div className='grid text-center gap-2 mt-16 mb-5'>
+    <div className='w-full flex justify-center'>
+        <div className='w-full items-center border-2 rounded-md border-textFormBorderbg px-10 py-10 '>
+        <div className='grid text-center gap-2 mb-5'>
                     <Heading heading='Edit FAQ' />
                 </div>
         <form onSubmit={onSubmit} encType='multipart/form-data'>
