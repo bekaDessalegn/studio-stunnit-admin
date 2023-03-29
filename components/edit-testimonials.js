@@ -14,6 +14,11 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const EditTestimonial = ({testimonial}) => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    name: testimonial.name,
+    occupation: testimonial.occupation,
+    description: testimonial.description
+  })
 
 
   const hiddenClicked = () => {
@@ -54,6 +59,11 @@ const EditTestimonial = ({testimonial}) => {
      router.push('/testimonials');
   }
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+
   return (
     <div className='w-full flex justify-center'>
         <div className='w-full items-center border-2 rounded-md border-textFormBorderbg px-10 py-10'>
@@ -61,11 +71,11 @@ const EditTestimonial = ({testimonial}) => {
                     <Heading heading='Edit Testimonials' />
                 </div>
         <form onSubmit={onSubmit} encType='multipart/form-data'>
-          <Textform label="Name" value={testimonial.name} />
-          <Textform label="Occupation" value={testimonial.occupation} />
+          <Textform label="Name" value={inputValues.name} inputChange={handleChange} />
+          <Textform label="Occupation" value={inputValues.occupation} inputChange={handleChange} />
           <p className='font-bold mb-1'>Rating</p>
           <Rating rate={testimonial.rating} />
-          <DescriptionTF label="Description" value={testimonial.description} />
+          <DescriptionTF label="Description" value={inputValues.description} inputChange={handleChange} />
           <div className="">
         <p className='font-bold mt-2'>Image</p>
         { image ? (

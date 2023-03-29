@@ -13,8 +13,27 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const AddTestimonial = ({ addTestimonial }) => {
   const [isImageNull, setIsImageNull] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    name: "",
+    occupation: "",
+    description: ""
+  })
 
   const [image, setImage] = useState(null);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  function clearTxt() {
+    setInputValues({
+      name: "",
+      occupation: "",
+      description: ""
+    })
+    setImage(null);
+  }
 
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
@@ -61,6 +80,7 @@ const AddTestimonial = ({ addTestimonial }) => {
       let data = await response.text();
       addTestimonial(JSON.parse(data));
       handleButtonClick();
+      clearTxt();
       setLoading(false);
     }
   }
@@ -72,11 +92,11 @@ const AddTestimonial = ({ addTestimonial }) => {
           <Heading heading='Add Testimonial' />
         </div>
         <form onSubmit={onSubmit} encType='multipart/form-data'  className='space-y-5'>
-          <Textform label="Name" />
-          <Textform label="Occupation" />
+          <Textform value={inputValues.name} inputChange={handleChange} label="Name" />
+          <Textform value={inputValues.occupation} inputChange={handleChange} label="Occupation" />
           <p className='font-bold mb-1'>Rating</p>
           <Rating />
-          <DescriptionTF label="Description" />
+          <DescriptionTF value={inputValues.description} inputChange={handleChange} label="Description" />
           <div className="">
             <p className='font-bold mt-2'>Image</p>
             {image ? (

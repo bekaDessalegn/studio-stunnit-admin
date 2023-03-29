@@ -16,7 +16,7 @@ const faq = ({ faqs }) => {
           <div className='h-16'></div>
           <AddFAQ addFaq={faq => {
             // console.log(allFaqs)
-            setAllFaqs([faq, ...allFaqs])
+            setAllFaqs([...allFaqs, faq])
             // console.log(allFaqs)
           }} />
         </LeftRightAligner>

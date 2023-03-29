@@ -15,6 +15,21 @@ export default function AddProject({ addProject }) {
 
   const [image, setImage] = useState(null);
   const [images, setImages] = useState([]);
+  const [inputValues, setInputValues] = useState({
+    title: "",
+    description: "",
+    clientsWord: ""
+  })
+
+  function clearTxt() {
+    setInputValues({
+      title: "",
+      description: "",
+      clientsWord: ""
+    })
+    setImage(null)
+    setImages([])
+  }
 
   const hiddenClicked = () => {
     document.getElementById("hiddenFile").click();
@@ -84,9 +99,15 @@ export default function AddProject({ addProject }) {
       let data = await response.text();
       addProject(data)
       handleButtonClick();
+      clearTxt();
       setLoading(false)
     }
   }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   return (
     <div className='w-full flex justify-center'>
@@ -95,9 +116,9 @@ export default function AddProject({ addProject }) {
           <Heading heading='Add Project' />
         </div>
         <form onSubmit={onSubmit} encType='multipart/form-data' className='space-y-5'>
-          <Textform label="Title" />
-          <DescriptionTF label="Description"  />
-          <ClientTF label="Client's word" />
+          <Textform value={inputValues.title} inputChange={handleChange}  label="Title" />
+          <DescriptionTF value={inputValues.description} inputChange={handleChange} label="Description"  />
+          <ClientTF value={inputValues.clientsWord} inputChange={handleChange} label="Client's word" />
           <div className="">
             <p className='font-bold mt-2'>Main Image</p>
             {image ? (

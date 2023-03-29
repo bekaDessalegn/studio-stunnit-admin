@@ -17,6 +17,11 @@ export default function EditProject({ project }) {
   const [image, setImage] = useState(null);
   const [images, setImages] = useState(project.moreImages);
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    title: project.title,
+    description: project.description,
+    clientsWord: project.clientsWord
+  })
 
   const hiddenClicked = () => {
     document.getElementById("hiddenFile").click();
@@ -83,6 +88,11 @@ export default function EditProject({ project }) {
     router.push('/');
   }
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+
   return (
     <div className='w-full flex justify-center'>
       <div className='w-full items-center border-2 rounded-md border-textFormBorderbg px-10 py-10'>
@@ -90,9 +100,9 @@ export default function EditProject({ project }) {
           <Heading heading='Edit Project' />
         </div>
         <form onSubmit={onSubmit} encType='multipart/form-data' className='space-y-5'>
-          <Textform value={project.title} label="Title" />
-          <DescriptionTF value={project.description} label="Description" />
-          <ClientTF value={project.clientsWord} label="Client's word" />
+          <Textform value={inputValues.title} inputChange={handleChange} label="Title" />
+          <DescriptionTF value={inputValues.description} inputChange={handleChange} label="Description" />
+          <ClientTF value={inputValues.clientsWord} inputChange={handleChange} label="Client's word" />
           <div className="">
             <p className='font-bold mt-2'>Image</p>
             {image ? (

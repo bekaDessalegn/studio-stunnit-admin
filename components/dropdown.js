@@ -5,8 +5,6 @@ const categories = ["Option 1", "Option 2", "Option 3", "Option 4"]
 
 const Dropdown = ({category}) => {
 
-  category = category ? category : "Dropdown"
-
   const [selectedItem, setSelectedItem] = useState(category)
   const [isOpen, setIsOpen] = useState(false)
 

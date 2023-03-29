@@ -13,6 +13,16 @@ const EditFAQ = ({faq}) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    question: faq.question,
+    answer: faq.answer,
+    category: faq.category
+  })
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -49,10 +59,10 @@ const EditFAQ = ({faq}) => {
                     <Heading heading='Edit FAQ' />
                 </div>
         <form onSubmit={onSubmit} encType='multipart/form-data'>
-          <Textform value={faq.question} label="Question" />
-          <DescriptionTF value={faq.answer} label="Answer" />
+          <Textform value={inputValues.question} inputChange={handleChange} label="Question" />
+          <DescriptionTF value={inputValues.answer} inputChange={handleChange} label="Answer" />
           <p className='font-bold mb-1'>Category</p>
-          <Dropdown category={faq.category} />
+          <Dropdown category={inputValues.category} />
           <div className=' my-10'>
             {loading ? (<div className='w-full flex items-center justify-center'>
             <CircularProgress color="warning" />

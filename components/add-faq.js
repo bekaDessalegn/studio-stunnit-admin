@@ -11,6 +11,11 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const AddFAQ = ({ addFaq }) => {
   const [isCategoryNull, setIsCategoryNull] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    question: "",
+    answer: "",
+    category: "Dropdown"
+  })
 
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
@@ -48,8 +53,22 @@ const AddFAQ = ({ addFaq }) => {
       let data = await response.text();
       addFaq(JSON.parse(data))
       handleButtonClick();
+      clearTxt();
       setLoading(false)
     }
+  }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  function clearTxt() {
+    setInputValues({
+      question: "",
+      answer: "",
+      category: "Dropdown"
+    })
   }
 
   return (
@@ -59,11 +78,11 @@ const AddFAQ = ({ addFaq }) => {
           <Heading heading='Add FAQ' />
         </div>
         <form onSubmit={onSubmit} encType='multipart/form-data' className='space-y-5'>
-          <Textform label="Question" />
-          <DescriptionTF label="Answer" />
+          <Textform value={inputValues.question} inputChange={handleChange} label="Question" />
+          <DescriptionTF value={inputValues.answer} inputChange={handleChange} label="Answer" />
           <div>
             <p className='font-bold mb-1'>Category</p>
-            <Dropdown />
+            <Dropdown category={inputValues.category} />
             {
               (isCategoryNull && (<div className='text-dangerColor '>
                 <p>Please select a category</p>

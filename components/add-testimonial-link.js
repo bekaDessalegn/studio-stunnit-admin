@@ -9,6 +9,9 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const AddTestimonialLink = ({ links, addLinks }) => {
   const [isLinkInvalid, setIsLinkInvalid] = useState()
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    link: ""
+  })
 
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
@@ -19,6 +22,17 @@ const AddTestimonialLink = ({ links, addLinks }) => {
     // Scroll to the top of the page when the button is clicked
     window.scrollTo(0, 0);
   };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  function clearTxt() {
+    setInputValues({
+      link: ""
+    })
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -49,6 +63,7 @@ const AddTestimonialLink = ({ links, addLinks }) => {
       console.log(JSON.parse(data));
       addLinks(JSON.parse(data));
       handleButtonClick();
+      clearTxt();
       setLoading(false)
     } else {
       setIsLinkInvalid(true)
@@ -68,7 +83,7 @@ const AddTestimonialLink = ({ links, addLinks }) => {
             <Heading heading='Add Testimonial Youtube Link' />
           </div>
           <form onSubmit={onSubmit} encType='multipart/form-data'>
-            <LinkTextformfield label="Testimonial Youtube Link" />
+            <LinkTextformfield value={inputValues.link} inputChange={handleChange} label="Testimonial Youtube Link" />
             {
               (isLinkInvalid && (<div className='text-dangerColor '>
                 <p>Please enter a valid youtube link</p>
