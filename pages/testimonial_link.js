@@ -13,7 +13,7 @@ const testimonials = ({ links }) => {
       <main className='' >
         <Navbar />
         <LeftRightAligner>
-          <AddTestimonialLink links={allLinks} addLinks={testimonialLink => setAllLinks([...allLinks, testimonialLink])} />
+          <AddTestimonialLink links={allLinks} removeLink={(id) => setAllLinks(allLinks.filter(t => t.id !== id))} addLinks={testimonialLink => setAllLinks([...allLinks, testimonialLink])} />
         </LeftRightAligner>
       </main>
     </>

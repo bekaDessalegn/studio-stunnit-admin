@@ -11,7 +11,7 @@ const testimonials = ({ testimonials }) => {
     <>
       <main className='' >
         <Navbar />
-        <TestimonialsList testimonials={allTestimonials} />
+        <TestimonialsList testimonials={allTestimonials} removeTestimonial={(id) => setAllTestimonials(allTestimonials.filter(t => t.id !== id))} />
         <LeftRightAligner>
           <AddTestimonial addTestimonial={testimonial => setAllTestimonials([...allTestimonials, testimonial])} />
         </LeftRightAligner>

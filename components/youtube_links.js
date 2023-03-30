@@ -6,12 +6,12 @@ import Modal from './modal';
 import LinkTextformfield from './linkTF';
 import apiUrl from '../config';
 
-const YoutubeLinks = ({ sth }) => {
+const YoutubeLinks = ({ sth, removeLink }) => {
   const [deleteLinkId, setLinkId] = useState()
   const [editLinkId, setEditLinkId] = useState()
   const [isOpen, setIsOpen] = useState(false);
 
-  const [links, setLinks] = useState(sth);
+  const links = sth;
 
   function handleOpenModal(id) {
     setLinkId(id)
@@ -55,7 +55,6 @@ const YoutubeLinks = ({ sth }) => {
   }
 
   async function onDelete() {
-    setLinks(links.filter(link => link.id !== deleteLinkId))
     setIsOpen(false);
     let headersList = {
       "Accept": "*/*"
@@ -68,6 +67,8 @@ const YoutubeLinks = ({ sth }) => {
 
     let data = await response.text();
     console.log(data);
+
+    removeLink(deleteLinkId);
 
   }
 

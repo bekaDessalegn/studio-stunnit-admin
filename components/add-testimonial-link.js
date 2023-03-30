@@ -6,7 +6,7 @@ import Heading from './heading'
 import apiUrl from '../config'
 import CircularProgress from '@mui/joy/CircularProgress';
 
-const AddTestimonialLink = ({ links, addLinks }) => {
+const AddTestimonialLink = ({ links, addLinks, removeLink }) => {
   const [isLinkInvalid, setIsLinkInvalid] = useState()
   const [loading, setLoading] = useState(false);
   const [inputValues, setInputValues] = useState({
@@ -76,7 +76,7 @@ const AddTestimonialLink = ({ links, addLinks }) => {
         <div className='grid text-center gap-2 mt-16 mb-5'>
           <Heading heading='Youtube Links' />
         </div>
-        <YoutubeLinks sth={links} />
+        <YoutubeLinks sth={links} removeLink={removeLink} />
         <div className='h-16'></div>
         <div className='border-2 rounded-md border-textFormBorderbg py-10 px-10 mb-10'>
           <div className='grid text-center gap-2 mt-5 mb-5'>

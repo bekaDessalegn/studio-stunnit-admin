@@ -5,11 +5,10 @@ import { AiOutlineDown, AiOutlineUp, AiOutlineEdit, AiOutlineDelete } from 'reac
 import Modal from './modal';
 import apiUrl from '../config';
 
-const FaqItem = ({ items }) => {
+const FaqItem = ({ items, removeFaq }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isOpen, setIsOpen] = useState(false);
   const [faqId, setFaqId] = useState()
-  const [allItems, setAllItems] = useState(items)
 
   function handleOpenModal(id) {
     setFaqId(id)
@@ -25,7 +24,6 @@ const FaqItem = ({ items }) => {
   }
 
   async function onDelete() {
-    setAllItems([...(allItems.filter(item => item.id !== faqId))])
     setIsOpen(false);
     let headersList = {
       "Accept": "*/*"
@@ -36,6 +34,8 @@ const FaqItem = ({ items }) => {
       headers: headersList
     });
 
+    removeFaq(faqId);
+
   }
 
   return (
@@ -45,7 +45,7 @@ const FaqItem = ({ items }) => {
           Are you sure you want to delete this FAQ?
         </p>
       </Modal>
-      {allItems.map((item, index) => (
+      {items.map((item, index) => (
         <div className={`accordion-item ${index === activeIndex ? 'active' : ''} w-full bg-surface`} key={index}>
           <div className="accordion-item-title" onClick={() => handleClick(index)}>
             <div className='font-semibold'>{item.question}</div>

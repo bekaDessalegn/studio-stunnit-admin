@@ -12,13 +12,9 @@ const faq = ({ faqs }) => {
       <main className='' >
         <Navbar />
         <LeftRightAligner>
-          <FaqList faqs={allFaqs} />
+          <FaqList faqs={allFaqs} removeFaq={(id) => setAllFaqs(allFaqs.filter(t => t.id !== id))} />
           <div className='h-16'></div>
-          <AddFAQ addFaq={faq => {
-            // console.log(allFaqs)
-            setAllFaqs([...allFaqs, faq])
-            // console.log(allFaqs)
-          }} />
+          <AddFAQ addFaq={faq => {setAllFaqs([...allFaqs, faq])}} />
         </LeftRightAligner>
         <div className='h-8'></div>
       </main>

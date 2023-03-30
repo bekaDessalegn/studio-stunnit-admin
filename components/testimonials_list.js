@@ -5,8 +5,7 @@ import Heading from './heading'
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
 import { Carousel } from 'flowbite-react'
 
-export default function TestimonialsList({ testimonials }) {
-    const [allTestimonials, setAllTestimonials] = useState(testimonials)
+export default function TestimonialsList({ testimonials, removeTestimonial }) {
     return (
         <>
             <LeftRightAligner>
@@ -22,11 +21,11 @@ export default function TestimonialsList({ testimonials }) {
                             <Carousel slide={false} leftControl={<MdArrowBackIosNew className='text-4xl text-darkGray hover:text-onSurface' />} rightControl={<MdArrowForwardIos className='text-4xl text-darkGray hover:text-onSurface' />} className='m-auto' indicators={false}>
 
                                 {
-                                    allTestimonials.map(
+                                    testimonials.map(
                                         (testimonial, index) =>
                                         (
                                             <div key={index} className="w-[92%] md:w-[80%] xl:w-[70%] max-w-[1126px] md:h-[300px]">
-                                                <TestimonialCard testimonial={testimonial} removeTestimonial={(id) => setAllTestimonials(allTestimonials.filter(t => t.id !== id))} />
+                                                <TestimonialCard testimonial={testimonial} removeTestimonial={removeTestimonial} />
                                             </div>
                                         )
                                     )
