@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/solid';
 
-const Rating = ({rate}) => {
-  rate = rate ? rate : 0;
-  const [rating, setRating] = useState(rate);
+const Rating = ({rate, setRate}) => {
 
   const handleRating = (value) => {
-    setRating(value);
+    setRate(value)
     setRatingValue(value)
   };
 
@@ -23,14 +20,14 @@ const Rating = ({rate}) => {
           <StarIcon
             key={ratingValue}
             className={`h-6 w-6 ${
-              ratingValue <= rating ? 'text-yellow-400' : 'text-gray-300'
+              ratingValue <= rate ? 'text-yellow-400' : 'text-gray-300'
             } cursor-pointer`}
             onClick={() => handleRating(ratingValue)}
           />
         );
       })}
-      <span className="ml-2">{rating}/5</span>
-      <input id='ratingValue' name='rating' className='hidden' value={rating}/>
+      <span className="ml-2">{rate}/5</span>
+      <input id='ratingValue' name='rating' className='hidden' value={rate}/>
     </div>
   );
 };

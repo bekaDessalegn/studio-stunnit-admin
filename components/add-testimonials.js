@@ -13,6 +13,7 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const AddTestimonial = ({ addTestimonial }) => {
   const [isImageNull, setIsImageNull] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [rate, setRate] = useState(0);
   const [inputValues, setInputValues] = useState({
     name: "",
     occupation: "",
@@ -33,6 +34,7 @@ const AddTestimonial = ({ addTestimonial }) => {
       description: ""
     })
     setImage(null);
+    setRate(0);
   }
 
   useEffect(() => {
@@ -95,7 +97,7 @@ const AddTestimonial = ({ addTestimonial }) => {
           <Textform value={inputValues.name} inputChange={handleChange} label="Name" />
           <Textform value={inputValues.occupation} inputChange={handleChange} label="Occupation" />
           <p className='font-bold mb-1'>Rating</p>
-          <Rating />
+          <Rating rate={rate} setRate={(rate) => setRate(rate)} />
           <DescriptionTF value={inputValues.description} inputChange={handleChange} label="Description" />
           <div className="">
             <p className='font-bold mt-2'>Image</p>
