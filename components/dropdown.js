@@ -15,14 +15,14 @@ const Dropdown = ({category}) => {
 
   return (
     <div className='w-full relative flex flex-col md:w-[340px] rounded-lg'>
-      <button onClick={() => setIsOpen((prev) => !prev)} className='bg-textFormbg border-textFormBorderbg rounded-lg p-2 w-full flex items-center justify-between border-2 active:border-accentColor duration-300 active:text-accentColor'>
+      <div onClick={() => setIsOpen((prev) => !prev)} className='bg-textFormbg border-textFormBorderbg rounded-lg p-2 w-full flex items-center justify-between border-2 active:border-accentColor duration-300 active:text-accentColor cursor-pointer'>
         {selectedItem ? (<p>{selectedItem}</p>) : (<p>Dropdown</p>)}
         {!isOpen ? (
           <AiFillCaretDown />
         ) : (
           <AiFillCaretUp />
         ) }
-        </button>
+        </div>
         {isOpen && (<div className='bg-textFormbg border-textFormBorderbg border-2 absolute top-14 flex flex-col items-start rounded-lg p-2 w-full'>
           {categories.map((item, i) => (
             <div onClick={() => {
