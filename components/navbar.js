@@ -30,7 +30,7 @@ export default function Navbar() {
     }
     return (
         <div>
-            <Modal isOpen={isOpen} onClose={handleCloseModal} title="Log out">
+            <Modal onClick={logout} isOpen={isOpen} onClose={handleCloseModal} title="Log out">
                 <p>Are you sure you want to logout ?</p>
             </Modal>
             <LeftRightAligner>
@@ -92,7 +92,7 @@ export default function Navbar() {
                                 </div>
                             </div>
                             <div>
-                                <div onClick={logout} className='bg-accentColor w-full py-2 text-center text-white font-bold rounded-lg cursor-pointer'>
+                                <div onClick={handleOpenModal} className='bg-accentColor w-full py-2 text-center text-white font-bold rounded-lg cursor-pointer'>
                                     Logout
                                 </div>
                             </div>
