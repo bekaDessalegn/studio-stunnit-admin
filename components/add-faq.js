@@ -11,10 +11,10 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const AddFAQ = ({ addFaq }) => {
   const [isCategoryNull, setIsCategoryNull] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState('Dropdown')
   const [inputValues, setInputValues] = useState({
     question: "",
-    answer: "",
-    category: "Dropdown"
+    answer: ""
   })
 
   useEffect(() => {
@@ -66,9 +66,9 @@ const AddFAQ = ({ addFaq }) => {
   function clearTxt() {
     setInputValues({
       question: "",
-      answer: "",
-      category: "Dropdown"
-    })
+      answer: ""
+    });
+    setCategory('Dropdown');
   }
 
   return (
@@ -82,7 +82,7 @@ const AddFAQ = ({ addFaq }) => {
           <DescriptionTF value={inputValues.answer} inputChange={handleChange} label="Answer" />
           <div>
             <p className='font-bold mb-1'>Category</p>
-            <Dropdown category={inputValues.category} />
+            <Dropdown category={category} setSelectedItem={(item) => setCategory(item)} />
             {
               (isCategoryNull && (<div className='text-dangerColor '>
                 <p>Please select a category</p>

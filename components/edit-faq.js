@@ -13,10 +13,10 @@ const EditFAQ = ({faq}) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState(faq.category)
   const [inputValues, setInputValues] = useState({
     question: faq.question,
-    answer: faq.answer,
-    category: faq.category
+    answer: faq.answer
   })
 
   const handleChange = (event) => {
@@ -62,7 +62,7 @@ const EditFAQ = ({faq}) => {
           <Textform value={inputValues.question} inputChange={handleChange} label="Question" />
           <DescriptionTF value={inputValues.answer} inputChange={handleChange} label="Answer" />
           <p className='font-bold mb-1'>Category</p>
-          <Dropdown category={inputValues.category} />
+          <Dropdown category={category} setSelectedItem={(item) => setCategory(item)} />
           <div className=' my-10'>
             {loading ? (<div className='w-full flex items-center justify-center'>
             <CircularProgress color="warning" />

@@ -3,9 +3,8 @@ import {AiFillCaretDown, AiFillCaretUp} from "react-icons/ai"
 
 const categories = ["Option 1", "Option 2", "Option 3", "Option 4"]
 
-const Dropdown = ({category}) => {
+const Dropdown = ({category, setSelectedItem}) => {
 
-  const [selectedItem, setSelectedItem] = useState(category)
   const [isOpen, setIsOpen] = useState(false)
 
   function getText(item) {
@@ -16,7 +15,7 @@ const Dropdown = ({category}) => {
   return (
     <div className='w-full relative flex flex-col md:w-[340px] rounded-lg'>
       <div onClick={() => setIsOpen((prev) => !prev)} className='bg-textFormbg border-textFormBorderbg rounded-lg p-2 w-full flex items-center justify-between border-2 active:border-accentColor duration-300 active:text-accentColor cursor-pointer'>
-        {selectedItem ? (<p>{selectedItem}</p>) : (<p>Dropdown</p>)}
+        {category ? (<p>{category}</p>) : (<p>Dropdown</p>)}
         {!isOpen ? (
           <AiFillCaretDown />
         ) : (
@@ -26,7 +25,7 @@ const Dropdown = ({category}) => {
         {isOpen && (<div className='bg-textFormbg border-textFormBorderbg border-2 absolute top-14 flex flex-col items-start rounded-lg p-2 w-full'>
           {categories.map((item, i) => (
             <div onClick={() => {
-              setSelectedItem(() => item)
+              setSelectedItem(item)
               setIsOpen((prev) => !prev)
               getText(item);
               }} className='hover:bg-background2 cursor-pointer w-full rounded-r-lg border-l-transparent hover:border-l-accentColor border-l-4' key={i}>
@@ -34,7 +33,7 @@ const Dropdown = ({category}) => {
             </div>
           ))}
         </div>)}
-        <input id='value' name='category' className='hidden' value={selectedItem}/>
+        <input id='value' name='category' className='hidden' value={category}/>
     </div>
   )
 }
