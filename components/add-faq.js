@@ -11,7 +11,7 @@ import CircularProgress from '@mui/joy/CircularProgress';
 const AddFAQ = ({ addFaq }) => {
   const [isCategoryNull, setIsCategoryNull] = useState(false)
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState('Dropdown')
+  const [category, setCategory] = useState('Select Category')
   const [inputValues, setInputValues] = useState({
     question: "",
     answer: ""
@@ -29,7 +29,7 @@ const AddFAQ = ({ addFaq }) => {
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (event.target.category.value === 'Dropdown') {
+    if (event.target.category.value === 'Select Category') {
       setIsCategoryNull(true);
     } else {
       setLoading(true)
@@ -68,7 +68,7 @@ const AddFAQ = ({ addFaq }) => {
       question: "",
       answer: ""
     });
-    setCategory('Dropdown');
+    setCategory('Select Category');
   }
 
   return (

@@ -19,7 +19,7 @@ const projects = ({ projects }) => {
                         <Navbar />
                         <LeftRightAligner>
                                 <div className='h-8'></div>
-                                <ProjectsList projects={allProjects} deleteProject={id => setAllProjects({ projects: allProjects.projects.filter(project => project.id !== id) })} />
+                                {allProjects?.projects?.length ? <ProjectsList projects={allProjects} deleteProject={id => setAllProjects({ projects: allProjects.projects.filter(project => project.id !== id) })} /> : <span></span>}
                                 <div className='h-16'></div>
                                 <AddProject addProject={project => setAllProjects({ projects: [...allProjects.projects, project] })} />
                         </LeftRightAligner>

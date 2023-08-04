@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {AiFillCaretDown, AiFillCaretUp} from "react-icons/ai"
 
-const categories = ["Option 1", "Option 2", "Option 3", "Option 4"]
+const categories = ["Design", "Execution"]
 
 const Dropdown = ({category, setSelectedItem}) => {
 
@@ -15,7 +15,7 @@ const Dropdown = ({category, setSelectedItem}) => {
   return (
     <div className='w-full relative flex flex-col md:w-[340px] rounded-lg'>
       <div onClick={() => setIsOpen((prev) => !prev)} className='bg-textFormbg border-textFormBorderbg rounded-lg p-2 w-full flex items-center justify-between border-2 active:border-accentColor duration-300 active:text-accentColor cursor-pointer'>
-        {category ? (<p>{category}</p>) : (<p>Dropdown</p>)}
+        {category ? (<p>{category}</p>) : (<p>Select Category</p>)}
         {!isOpen ? (
           <AiFillCaretDown />
         ) : (
