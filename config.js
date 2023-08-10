@@ -1,3 +1,3 @@
-const apiUrl = 'http://localhost:3000/api';
+const apiUrl = 'https://studiostunnit.in/api';
 
 export default apiUrl;
