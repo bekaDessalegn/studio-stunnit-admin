@@ -1,3 +1,3 @@
-const apiUrl = 'https://admin.studiostunnit.in/api';
+const apiUrl = 'https://admin.studiostunnit.com/api';
 
 export default apiUrl;
