@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Navbar from '../components/navbar'
 import AddTestimonialLink from '../components/add-testimonial-link'
-import apiUrl from '../config'
 import LeftRightAligner from '../components/left-right-aligner'
+import Navbar from '../components/navbar'
+import apiUrl from '../config'
 
 const testimonials = ({ links }) => {
 
@@ -13,7 +13,7 @@ const testimonials = ({ links }) => {
       <main className='' >
         <Navbar />
         <LeftRightAligner>
-          <AddTestimonialLink links={allLinks} removeLink={(id) => setAllLinks(allLinks.filter(t => t.id !== id))} addLinks={testimonialLink => setAllLinks([...allLinks, testimonialLink])} />
+          <AddTestimonialLink setAllLinks={setAllLinks} links={allLinks} removeLink={(id) => setAllLinks(allLinks.filter(t => t.id !== id))} addLinks={testimonialLink => setAllLinks([...allLinks, testimonialLink])} />
         </LeftRightAligner>
       </main>
     </>
@@ -22,7 +22,7 @@ const testimonials = ({ links }) => {
 
 export default testimonials
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     let res = await fetch(`${apiUrl}/testimonial-youtube-links`);
     let data = await res.json();

@@ -1,11 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useState } from 'react'
-import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
-import Image from 'next/image'
 import Link from 'next/link'
-import Modal from './modal';
-import apiUrl from '../config'
-
+import { useState } from 'react'
+import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
+import { BASE_URL, default as apiUrl } from '../config'
+import Modal from './modal'
 
 export default function ProjectsList({ projects, deleteProject }) {
 
@@ -38,6 +36,7 @@ export default function ProjectsList({ projects, deleteProject }) {
         console.log(data);
 
     }
+    
 
 
     return (
@@ -65,7 +64,7 @@ export default function ProjectsList({ projects, deleteProject }) {
                                 // transition={{ duration: 2 }}
                                 className=' grid h-full'
                             >
-                                <img src={currentProject.mainImage} className='h-[650px] max-h-[70vh] w-screen mx-auto  object-cover rounded-md' />
+                                <img src={BASE_URL+"/"+currentProject.mainImage} className='h-[650px] max-h-[70vh] w-screen mx-auto  object-cover rounded-md' />
                             </motion.div>
                         </AnimatePresence>
                     </div>

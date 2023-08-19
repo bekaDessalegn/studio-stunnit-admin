@@ -1,12 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from 'next/link'
-import React from 'react'
-import RatingStars from './rating-stars'
-import { useState } from 'react';
-import Modal from './modal';
+import Link from 'next/link';
+import React, { useState } from 'react';
 import apiUrl from '../config';
+import Modal from './modal';
+import RatingStars from './rating-stars';
 
-export default function TestimonialCard({ testimonial, removeTestimonial }) {
+export default function TestimonialCard({ testimonial }) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleOpenModal() {
@@ -18,7 +17,7 @@ export default function TestimonialCard({ testimonial, removeTestimonial }) {
     }
 
     async function onDelete() {
-        removeTestimonial(testimonial.id)
+        // removeTestimonial(testimonial.id)
         setIsOpen(false);
         let headersList = {
             "Accept": "*/*"
@@ -31,7 +30,8 @@ export default function TestimonialCard({ testimonial, removeTestimonial }) {
 
         let data = await response.text();
         console.log(data);
-
+        location.reload()
+        
     }
 
     return (

@@ -1,44 +1,46 @@
 import React, { useState } from 'react'
-import Navbar from '../../components/navbar'
 import AddTestimonial from '../../components/add-testimonials'
+import Navbar from '../../components/navbar'
 import TestimonialsList from '../../components/testimonials_list'
 import apiUrl from '../../config'
-import LeftRightAligner from '../../components/left-right-aligner'
 
-const testimonials = ({ testimonials }) => {
-  const [allTestimonials, setAllTestimonials] = useState(testimonials)
+const testimonials = ({testimons}) => {
+  const [testimonials, setTestimonials]=useState(testimons)
   return (
     <>
       <main className='' >
         <Navbar />
-        <TestimonialsList testimonials={allTestimonials} removeTestimonial={(id) => setAllTestimonials(allTestimonials.filter(t => t.id !== id))} />
-        <LeftRightAligner>
-          <AddTestimonial addTestimonial={testimonial => setAllTestimonials([...allTestimonials, testimonial])} />
-        </LeftRightAligner>
-        <div className='h-8'></div>
-      </main>
+        <TestimonialsList testimonials={testimonials}/>
+        <AddTestimonial setTestimonials={setTestimonials}/>
+    </main>
     </>
   )
 }
 
 export default testimonials
 
-export async function getStaticProps() {
-
+export async function getServerSideProps() {
   try {
-    let res = await fetch(`${apiUrl}/testimonials`);
-    let testimonials = await res.json();
+    let headersList = {
+      "Accept": "*/*",
+    }
+    let response = await fetch(`${apiUrl}/testimonials`, {
+      method: "GET",
+      headers: headersList
+    });
+    let data = await response.text();
+    const testimonials = JSON.parse(data);
+
     return {
       props: {
-        testimonials,
+        testimons: testimonials,
       }
     };
   } catch (error) {
     console.error(error)
-
     return {
       props: {
-        testimonials: [],
+        testimons: [],
         error: error
       }
     };

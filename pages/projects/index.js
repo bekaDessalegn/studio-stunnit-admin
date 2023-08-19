@@ -1,13 +1,15 @@
-import Navbar from '../../components/navbar'
 import Head from 'next/head'
+import { useState } from 'react'
 import AddProject from '../../components/add-project'
+import LeftRightAligner from '../../components/left-right-aligner'
+import Navbar from '../../components/navbar'
 import ProjectsList from '../../components/projects_list'
 import apiUrl from '../../config'
-import { useEffect, useState } from 'react'
-import LeftRightAligner from '../../components/left-right-aligner'
 
 const projects = ({ projects }) => {
-        const [allProjects, setAllProjects] = useState(projects)
+
+  const [allProjects, setAllProjects] = useState(projects)
+       
         return <>
                 <Head>
                         <title>Studio Stunnit Admin</title>
@@ -29,3 +31,33 @@ const projects = ({ projects }) => {
 }
 
 export default projects
+
+
+export async function getServerSideProps() {
+        try {
+          let headersList = {
+            "Accept": "*/*",
+          }
+          let response = await fetch(`${apiUrl}/projects`, {
+            method: "GET",
+            headers: headersList
+          });
+      
+          let data = await response.text();
+          const projects = JSON.parse(data);
+      
+          return {
+            props: {
+                projects: projects,
+            }
+          };
+        } catch (error) {
+          console.error(error)
+          return {
+            props: {
+              projects: [],
+              error: error
+            }
+          };
+        }
+      }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import Navbar from '../../components/navbar'
 import AddFAQ from '../../components/add-faq'
 import FaqList from '../../components/faq_list'
-import apiUrl from '../../config'
 import LeftRightAligner from '../../components/left-right-aligner'
+import Navbar from '../../components/navbar'
+import apiUrl from '../../config'
 
 const faq = ({ faqs }) => {
   const [allFaqs, setAllFaqs] = useState(faqs)
@@ -24,7 +24,7 @@ const faq = ({ faqs }) => {
 
 export default faq
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     let res = await fetch(`${apiUrl}/faqs`);
     let faqs = await res.json();

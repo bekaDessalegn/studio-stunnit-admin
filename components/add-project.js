@@ -1,13 +1,12 @@
-import React from 'react'
-import Textform from './textformfield'
-import DescriptionTF from './descriptionTF'
-import ClientTF from './clientTF'
-import Button2 from './button2'
-import Heading from './heading'
+import CircularProgress from '@mui/joy/CircularProgress'
+import { useEffect, useState } from 'react'
 import apiUrl from '../config'
-import { useState, useEffect } from 'react'
+import Button2 from './button2'
+import ClientTF from './clientTF'
+import DescriptionTF from './descriptionTF'
+import Heading from './heading'
+import Textform from './textformfield'
 import UploadButton from './upload_button'
-import CircularProgress from '@mui/joy/CircularProgress';
 
 export default function AddProject({ addProject }) {
   const [isImageNull, setIsImageNull] = useState(false)
@@ -80,6 +79,12 @@ export default function AddProject({ addProject }) {
       let headersList = {
         "Accept": "*/*"
       }
+      console.log("data check")
+      console.log(event.target.title.value)
+      console.log(event.target.clientsWord.value)
+      console.log(event.target.description.value)
+      console.log(image)
+      console.log(images)
 
       let bodyContent = new FormData();
       bodyContent.append("title", event.target.title.value);
@@ -89,14 +94,18 @@ export default function AddProject({ addProject }) {
       images.map((image) => {
         bodyContent.append("moreImages", image);
       })
-
+      console.log(bodyContent)
+      
       let response = await fetch(`${apiUrl}/projects`, {
         method: "POST",
         body: bodyContent,
         headers: headersList
       });
-
+      console.log("response")
+      console.log(response)
+      
       let data = await response.text();
+      console.log(data)
       addProject(data)
       handleButtonClick();
       clearTxt();

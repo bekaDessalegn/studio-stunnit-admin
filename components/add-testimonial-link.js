@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import LinkTextformfield from './linkTF'
-import Button2 from './button2'
-import YoutubeLinks from './youtube_links'
-import Heading from './heading'
+import CircularProgress from '@mui/joy/CircularProgress'
+import React, { useEffect, useState } from 'react'
 import apiUrl from '../config'
-import CircularProgress from '@mui/joy/CircularProgress';
+import Button2 from './button2'
+import Heading from './heading'
+import LinkTextformfield from './linkTF'
+import YoutubeLinks from './youtube_links'
 
-const AddTestimonialLink = ({ links, addLinks, removeLink }) => {
+const AddTestimonialLink = ({ setAllLinks, links, addLinks, removeLink }) => {
   const [isLinkInvalid, setIsLinkInvalid] = useState()
   const [loading, setLoading] = useState(false);
   const [inputValues, setInputValues] = useState({
@@ -76,7 +76,7 @@ const AddTestimonialLink = ({ links, addLinks, removeLink }) => {
         <div className='grid text-center gap-2 mt-16 mb-5'>
           <Heading heading='Youtube Links' />
         </div>
-        <YoutubeLinks sth={links} removeLink={removeLink} />
+        <YoutubeLinks setAllLinks={setAllLinks} sth={links} removeLink={removeLink} />
         <div className='h-16'></div>
         <div className='border-2 rounded-md border-textFormBorderbg py-10 px-10 mb-10'>
           <div className='grid text-center gap-2 mt-5 mb-5'>

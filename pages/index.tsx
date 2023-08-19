@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import Projects from './projects/index'
 import apiUrl from '../config'
+import Projects from './projects/index'
 
 const Home: NextPage = (projects) => {
 
@@ -11,7 +11,7 @@ const Home: NextPage = (projects) => {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     let res = await fetch(`${apiUrl}/projects`);
     let projects = await res.json();

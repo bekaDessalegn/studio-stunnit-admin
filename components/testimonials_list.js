@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import TestimonialCard from './testimonial-card'
-import LeftRightAligner from './left-right-aligner'
-import Heading from './heading'
-import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
 import { Carousel } from 'flowbite-react'
+import React from 'react'
+import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
+import Heading from './heading'
+import LeftRightAligner from './left-right-aligner'
+import TestimonialCard from './testimonial-card'
 
-export default function TestimonialsList({ testimonials, removeTestimonial }) {
+export default function TestimonialsList({ testimonials }) {
     return (
         <>
             <LeftRightAligner>
@@ -13,6 +13,7 @@ export default function TestimonialsList({ testimonials, removeTestimonial }) {
 
                     <div className='grid text-center gap-2'>
                         <Heading heading='Testimonials' />
+                        Total {testimonials.length}
                     </div>
                     <div className='grid gap-2'>
 
@@ -25,10 +26,10 @@ export default function TestimonialsList({ testimonials, removeTestimonial }) {
                                         (testimonial, index) =>
                                         (
                                             <div key={index} className="w-[92%] md:w-[80%] xl:w-[70%] max-w-[1126px] md:h-[300px]">
-                                                <TestimonialCard testimonial={testimonial} removeTestimonial={removeTestimonial} />
+                                                <TestimonialCard testimonial={testimonial} />
                                             </div>
                                         )
-                                    )
+                                    ) 
                                 }
                             </Carousel>
                         </div>

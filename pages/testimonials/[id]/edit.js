@@ -1,8 +1,8 @@
-import React from 'react'
-import Navbar from '../../../components/navbar'
+import React from 'react';
 import EditTestimonial from '../../../components/edit-testimonials';
-import apiUrl from '../../../config';
 import LeftRightAligner from '../../../components/left-right-aligner';
+import Navbar from '../../../components/navbar';
+import apiUrl from '../../../config';
 
 export default function editTestimonial({ testimonial }) {
 
@@ -20,29 +20,20 @@ export default function editTestimonial({ testimonial }) {
   )
 }
 
-export async function getStaticPaths() {
-  const ids = [];
+export async function getServerSideProps({ params }) {
 
   try {
+    const ids = [];
+
     let res = await fetch(`${apiUrl}/testimonials`);
-    let testimonials = await res.json();
-    const id = testimonials.map((testimonial) => testimonial.id)
+    let testimonials_list = await res.json();
+    const id = testimonials_list.map((testimonial) => testimonial.id)
     ids.push(...id)
-  } catch (error) {
-    console.error(error)
-  }
 
-  const paths = ids.map((id) => ({
-    params: { id: id.toString() },
-  }));
+    const paths = ids.map((id) => ({
+      params: { id: id.toString() },
+    }));
 
-  return { paths, fallback: true };
-}
-
-export async function getStaticProps({ params }) {
-  console.log(params)
-
-  try {
     let headersList = {
       "Accept": "*/*",
     }
@@ -51,6 +42,7 @@ export async function getStaticProps({ params }) {
       method: "GET",
       headers: headersList
     });
+
 
     let data = await response.text();
     const testimonials = JSON.parse(data);

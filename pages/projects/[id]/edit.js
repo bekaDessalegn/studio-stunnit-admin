@@ -1,7 +1,7 @@
-import Navbar from '../../../components/navbar'
-import EditProject from '../../../components/edit-project'
-import apiUrl from '../../../config';
+import EditProject from '../../../components/edit-project';
 import LeftRightAligner from '../../../components/left-right-aligner';
+import Navbar from '../../../components/navbar';
+import apiUrl from '../../../config';
 
 export default function editProject({ project }) {
   return <>
@@ -16,43 +16,21 @@ export default function editProject({ project }) {
   </>
 }
 
-export async function getStaticPaths() {
-  const ids = [];
+export async function getServerSideProps({ params }) {
 
-  try {
-    let res = await fetch(`${apiUrl}/projects`);
-    let projects = await res.json();
-    const id = projects.map((project) => project.id)
-    ids.push(...id)
-  } catch (error) {
-    console.error(error)
-  }
-
-  const paths = ids.map((id) => ({
-    params: { id: id.toString() },
-  }));
-
-  return { paths, fallback: true };
-}
-
-export async function getStaticProps({ params }) {
-  console.log(params)
-
+  let id = params.id
   try {
     let headersList = {
       "Accept": "*/*",
     }
 
-    let response = await fetch(`${apiUrl}/projects`, {
+    let response = await fetch(`${apiUrl}/projects?id=${id}`, {
       method: "GET",
       headers: headersList
     });
 
     let data = await response.text();
-    const projects = JSON.parse(data);
-    const project = projects.find(function (project) {
-      return project.id.toString() === params.id;
-    })
+    const project = JSON.parse(data);
 
     return {
       props: {

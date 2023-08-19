@@ -1,16 +1,14 @@
-import React from 'react'
-import Textform from './textformfield'
-import DescriptionTF from './descriptionTF'
-import Button2 from './button2'
-import Rating from './rate'
-import UploadTestimonialImage from './upload-testimonial-image'
-import Heading from './heading'
+import CircularProgress from '@mui/joy/CircularProgress'
+import React, { useEffect, useState } from 'react'
 import apiUrl from '../config'
-import { useState, useEffect } from 'react'
-import UploadButton from './upload_button';
-import CircularProgress from '@mui/joy/CircularProgress';
+import Button2 from './button2'
+import DescriptionTF from './descriptionTF'
+import Heading from './heading'
+import Rating from './rate'
+import Textform from './textformfield'
+import UploadButton from './upload_button'
 
-const AddTestimonial = ({ addTestimonial }) => {
+const AddTestimonial = ({setTestimonials}) => {
   const [isImageNull, setIsImageNull] = useState(false)
   const [loading, setLoading] = useState(false);
   const [rate, setRate] = useState(0);
@@ -57,9 +55,13 @@ const AddTestimonial = ({ addTestimonial }) => {
 
   async function onSubmit(event) {
     event.preventDefault();
+    console.log("submitting")
+    let imageLess = false
     if (event.target.avatar.value === '') {
-      setIsImageNull(true);
-    } else {
+      // setIsImageNull(true);
+      imageLess = true
+    } 
+    // else {
       setIsImageNull(false);
       setLoading(true);
       let headersList = {
@@ -71,7 +73,7 @@ const AddTestimonial = ({ addTestimonial }) => {
       bodyContent.append("occupation", event.target.occupation.value);
       bodyContent.append("rating", parseInt(event.target.rating.value));
       bodyContent.append("description", event.target.description.value);
-      bodyContent.append("avatar", image);
+      imageLess ? null :bodyContent.append("avatar", image);
 
       let response = await fetch(`${apiUrl}/testimonials`, {
         method: "POST",
@@ -80,11 +82,19 @@ const AddTestimonial = ({ addTestimonial }) => {
       });
 
       let data = await response.text();
-      addTestimonial(JSON.parse(data));
+      // fetching the update
+      let response2 = await fetch(`${apiUrl}/testimonials`, {
+        method: "GET",
+        headers: headersList
+      });
+
+      let data2 = await response2.text();
+      let tesimon = JSON.parse(data2)
+      setTestimonials(tesimon)
       handleButtonClick();
       clearTxt();
       setLoading(false);
-    }
+    // }
   }
 
   return (

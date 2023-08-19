@@ -1,15 +1,13 @@
-import React from 'react'
-import Textform from './textformfield'
-import DescriptionTF from './descriptionTF'
-import Button2 from './button2'
-import Rating from './rate'
-import UploadTestimonialImage from './upload-testimonial-image'
-import Heading from './heading'
-import apiUrl from '../config'
+import CircularProgress from '@mui/joy/CircularProgress'
 import { useRouter } from 'next/router'
-import UploadButton from './upload_button';
-import { useState } from 'react'
-import CircularProgress from '@mui/joy/CircularProgress';
+import React, { useState } from 'react'
+import apiUrl from '../config'
+import Button2 from './button2'
+import DescriptionTF from './descriptionTF'
+import Heading from './heading'
+import Rating from './rate'
+import Textform from './textformfield'
+import UploadButton from './upload_button'
 
 const EditTestimonial = ({testimonial}) => {
   const [image, setImage] = useState(null);

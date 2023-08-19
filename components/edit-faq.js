@@ -1,13 +1,12 @@
-import React from 'react'
-import Textform from './textformfield'
-import DescriptionTF from './descriptionTF'
+import CircularProgress from '@mui/joy/CircularProgress'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import apiUrl from '../config'
 import Button2 from './button2'
+import DescriptionTF from './descriptionTF'
 import Dropdown from './dropdown'
 import Heading from './heading'
-import apiUrl from '../config'
-import { useRouter } from 'next/router'
-import CircularProgress from '@mui/joy/CircularProgress';
-import { useState } from 'react'
+import Textform from './textformfield'
 
 const EditFAQ = ({faq}) => {
   const router = useRouter();
@@ -46,6 +45,7 @@ const EditFAQ = ({faq}) => {
      
      let data = await response.text();
      console.log(data);
+     location.reload
 
      setLoading(false);
 

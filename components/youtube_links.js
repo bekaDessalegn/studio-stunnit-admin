@@ -1,12 +1,11 @@
-import React from 'react'
-import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'
-import { MdDone } from 'react-icons/md'
-import { useState } from 'react';
-import Modal from './modal';
-import LinkTextformfield from './linkTF';
+import React, { useState } from 'react';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { MdDone } from 'react-icons/md';
 import apiUrl from '../config';
+import LinkTextformfield from './linkTF';
+import Modal from './modal';
 
-const YoutubeLinks = ({ sth, removeLink }) => {
+const YoutubeLinks = ({ setAllLinks, sth, removeLink }) => {
   const [deleteLinkId, setLinkId] = useState()
   const [editLinkId, setEditLinkId] = useState()
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +44,16 @@ const YoutubeLinks = ({ sth, removeLink }) => {
     });
 
     let data = await response.text();
-    console.log(data);
+
+    let response2 = await fetch(`${apiUrl}/testimonial-youtube-links`, {
+      method: "GET",
+      headers: headersList
+    });
+
+    let data2 = await response2.text();
+    let links = JSON.parse(data2)
+    setAllLinks(links)
+
     handleCloseEdit();
 
   }
