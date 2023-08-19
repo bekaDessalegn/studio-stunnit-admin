@@ -1,39 +1,15 @@
-import Navbar from '../../components/navbar'
 import Head from 'next/head'
+import { useState } from 'react'
 import AddProject from '../../components/add-project'
+import LeftRightAligner from '../../components/left-right-aligner'
+import Navbar from '../../components/navbar'
 import ProjectsList from '../../components/projects_list'
-import img1 from '../../public/images/Asset_14.png'
-import img2 from '../../public/images/Asset_16.png'
-import img3 from '../../public/images/Asset_20.png'
+import apiUrl from '../../config'
 
-const projects = [
-        {
-            id: 1,
-            title: "Arnua Project",
-            primaryImage: img1,
-            imageUrl: [img2, img1, img3],
-            description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. QUICK CONTACT Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie conse- quat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad",
-            testimony: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit"
-        },
-        {
-            id: 2,
-            title: "Mr Murthy's Project",
-            primaryImage: img1,
-            imageUrl: [img2, img1, img3],
-            description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. QUICK CONTACT Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie conse- quat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad",
-            testimony: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit"
-        },
-        {
-            id: 3,
-            title: "Studio Stunnit Project",
-            primaryImage: img1,
-            imageUrl: [img2, img1, img3],
-            description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. QUICK CONTACT Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie conse- quat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad",
-            testimony: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit"
-        },
-    ];
+const projects = ({ projects }) => {
 
-export default function Projects() {
+  const [allProjects, setAllProjects] = useState(projects)
+       
         return <>
                 <Head>
                         <title>Studio Stunnit Admin</title>
@@ -41,10 +17,47 @@ export default function Projects() {
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
                         <link rel="icon" href="/favicon.ico" />
                 </Head>
-                        <main className='' >
-                                <Navbar />
-                                <ProjectsList projects={projects} />
-                                <AddProject />
-                        </main>
-                </>
+                <main className='' >
+                        <Navbar />
+                        <LeftRightAligner>
+                                <div className='h-8'></div>
+                                {allProjects?.projects?.length ? <ProjectsList projects={allProjects} deleteProject={id => setAllProjects({ projects: allProjects.projects.filter(project => project.id !== id) })} /> : <span></span>}
+                                <div className='h-16'></div>
+                                <AddProject addProject={project => setAllProjects({ projects: [...allProjects.projects, project] })} />
+                        </LeftRightAligner>
+                        <div className='h-8'></div>
+                </main>
+        </>
 }
+
+export default projects
+
+
+export async function getServerSideProps() {
+        try {
+          let headersList = {
+            "Accept": "*/*",
+          }
+          let response = await fetch(`${apiUrl}/projects`, {
+            method: "GET",
+            headers: headersList
+          });
+      
+          let data = await response.text();
+          const projects = JSON.parse(data);
+      
+          return {
+            props: {
+                projects: projects,
+            }
+          };
+        } catch (error) {
+          console.error(error)
+          return {
+            props: {
+              projects: [],
+              error: error
+            }
+          };
+        }
+      }

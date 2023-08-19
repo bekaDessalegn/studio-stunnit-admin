@@ -17,7 +17,7 @@ export default function UploadTestimonialImage({imageUrl}) {
 
   return (
     <div className="">
-        <p className='font-bold my-2'>Image</p>
+        <p className='font-bold mt-2'>Image</p>
         { image ? (
           <div>
           <Image className="w-[170px] h-[170px] rounded-full my-5" width={230} height={230} src={URL.createObjectURL(image)} />
@@ -29,11 +29,12 @@ export default function UploadTestimonialImage({imageUrl}) {
       <div className="flex flex-col">
         <UploadButton onClick={hiddenClicked}/>
         <input
+        name = "avatar"
           type="file"
           accept="image/*"
           id='hiddenFile'
           onChange={handleImageChange}
-          className="mb-4 invisible"
+          className="invisible h-0"
         />
       </div>
     </div>

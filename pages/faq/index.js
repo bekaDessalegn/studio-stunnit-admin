@@ -1,54 +1,46 @@
-import React from 'react'
-import Navbar from '../../components/navbar'
+import React, { useState } from 'react'
 import AddFAQ from '../../components/add-faq'
 import FaqList from '../../components/faq_list'
+import LeftRightAligner from '../../components/left-right-aligner'
+import Navbar from '../../components/navbar'
+import apiUrl from '../../config'
 
-const faq = ({faqs}) => {
+const faq = ({ faqs }) => {
+  const [allFaqs, setAllFaqs] = useState(faqs)
   return (
     <>
       <main className='' >
         <Navbar />
-        <FaqList faqs={faqs}/>
-        <AddFAQ />
-    </main>
+        <LeftRightAligner>
+          <FaqList faqs={allFaqs} removeFaq={(id) => setAllFaqs(allFaqs.filter(t => t.id !== id))} />
+          <div className='h-16'></div>
+          <AddFAQ addFaq={faq => {setAllFaqs([...allFaqs, faq])}} />
+        </LeftRightAligner>
+        <div className='h-8'></div>
+      </main>
     </>
   )
 }
 
 export default faq
 
-export async function getStaticProps() {
-  // Fetch items data from an API or database
-  const faqs = [
-    {
-        id: 1,
-        question : "What if I don’t like the design? How many options do I get?",
-        answer : "Studio Stunnit is a multidisciplinary design firm envisioning interior designs that are unique and spell-binding. Established in 2022, helmed by eminent interior designers in Hyderabad, the studio focuses on crafting a premium style approach-visualising spaces with aesthetic coherence and functional congruity. With 8 years of design experience.",
-        category: "Option 1"
-    },
-    {
-        id: 2,
-        question : "What if I couldn’t implement the design myself? Will you help me after that?",
-        answer : "Studio Stunnit is a multidisciplinary design firm envisioning interior designs that are unique and spell-binding. Established in 2022, helmed by eminent interior designers in Hyderabad, the studio focuses on crafting a premium style approach-visualising spaces with aesthetic coherence and functional congruity. With 8 years of design experience.",
-        category: "Option 2"
-    },
-    {
-        id: 3,
-        question : "What if I don’t like the design? How many options do I get?",
-        answer : "Studio Stunnit is a multidisciplinary design firm envisioning interior designs that are unique and spell-binding. Established in 2022, helmed by eminent interior designers in Hyderabad, the studio focuses on crafting a premium style approach-visualising spaces with aesthetic coherence and functional congruity. With 8 years of design experience.",
-        category: "Option 2"
-    },
-    {
-        id: 4,
-        question : "What if I don’t like the design? How many options do I get?",
-        answer : "Studio Stunnit is a multidisciplinary design firm envisioning interior designs that are unique and spell-binding. Established in 2022, helmed by eminent interior designers in Hyderabad, the studio focuses on crafting a premium style approach-visualising spaces with aesthetic coherence and functional congruity. With 8 years of design experience.",
-        category: "Option 3"
-    },
-];
+export async function getServerSideProps() {
+  try {
+    let res = await fetch(`${apiUrl}/faqs`);
+    let faqs = await res.json();
+    return {
+      props: {
+        faqs,
+      }
+    };
+  } catch (error) {
+    console.error(error)
 
-  return {
-    props: {
-      faqs,
-    },
-  };
+    return {
+      props: {
+        faqs: [],
+        error: error
+      }
+    };
+  }
 }

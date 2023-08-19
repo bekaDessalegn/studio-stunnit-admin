@@ -4,22 +4,99 @@ import DescriptionTF from './descriptionTF'
 import Button2 from './button2'
 import Dropdown from './dropdown'
 import Heading from './heading'
+import apiUrl from '../config'
+import { useState, useEffect } from 'react'
+import CircularProgress from '@mui/joy/CircularProgress';
 
-const AddFAQ = () => {
+const AddFAQ = ({ addFaq }) => {
+  const [isCategoryNull, setIsCategoryNull] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState('Select Category')
+  const [inputValues, setInputValues] = useState({
+    question: "",
+    answer: ""
+  })
+
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleButtonClick = () => {
+    // Scroll to the top of the page when the button is clicked
+    window.scrollTo(0, 0);
+  };
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    if (event.target.category.value === 'Select Category') {
+      setIsCategoryNull(true);
+    } else {
+      setLoading(true)
+      setIsCategoryNull(false);
+      let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+      }
+
+      let bodyContent = JSON.stringify({
+        "question": event.target.question.value,
+        "answer": event.target.answer.value,
+        "category": event.target.category.value
+      });
+
+      let response = await fetch(`${apiUrl}/faqs`, {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList
+      });
+      let data = await response.text();
+      addFaq(JSON.parse(data))
+      handleButtonClick();
+      clearTxt();
+      setLoading(false)
+    }
+  }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  function clearTxt() {
+    setInputValues({
+      question: "",
+      answer: ""
+    });
+    setCategory('Select Category');
+  }
+
   return (
-    <div className='w-screen flex justify-center'>
-        <div className='w-3/5 items-center border-x-2 border-textFormBorderbg px-10 '>
+    <div className='w-full flex justify-center'>
+      <div className='w-full items-center border-2 rounded-md border-textFormBorderbg px-10 py-10'>
         <div className='grid text-center gap-2 mb-5'>
-                    <Heading heading='Add FAQ' />
-                </div>
-        <Textform label="Question" />
-        <DescriptionTF label="Answer" />
-        <p className='font-bold mb-1'>Category</p>
-        <Dropdown options={['Option 1', 'Option 2', 'Option 3']} />
-        <div className=' my-10'>
-        <Button2 name="Add FAQ" />
+          <Heading heading='Add FAQ' />
         </div>
-        </div>
+        <form onSubmit={onSubmit} encType='multipart/form-data' className='space-y-5'>
+          <Textform value={inputValues.question} inputChange={handleChange} label="Question" />
+          <DescriptionTF value={inputValues.answer} inputChange={handleChange} label="Answer" />
+          <div>
+            <p className='font-bold mb-1'>Category</p>
+            <Dropdown category={category} setSelectedItem={(item) => setCategory(item)} />
+            {
+              (isCategoryNull && (<div className='text-dangerColor '>
+                <p>Please select a category</p>
+              </div>))
+            }
+          </div>
+          {loading ? (<div className='w-full flex items-center justify-center'>
+            <CircularProgress color="warning" />
+          </div>) : (
+            <button type='submit' className='w-full'>
+            <Button2 name="Add FAQ" />
+          </button>)}
+        </form>
+      </div>
     </div>
   )
 }
