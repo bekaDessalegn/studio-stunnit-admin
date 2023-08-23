@@ -12,7 +12,7 @@ import UploadButton from "./upload_button";
 export default function EditProject({ project }) {
   const router = useRouter();
 
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(project.mainImage);
   const [mainImage, setMainImage] = useState(project.mainImage);
   const [images, setImages] = useState(project.moreImages);
   const [moreImages, setMoreImages] = useState(project.moreImages);
@@ -125,7 +125,7 @@ export default function EditProject({ project }) {
                 <img
                   className="max-w-[250px] h-[150px] rounded-lg my-5"
                   src={
-                    mainImage != null
+                    mainImage != null && typeof image == "string"
                       ? BASE_URL + mainImage
                       : URL.createObjectURL(image)
                   }
